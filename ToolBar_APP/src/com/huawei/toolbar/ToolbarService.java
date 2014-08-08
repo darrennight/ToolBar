@@ -18,11 +18,11 @@ import com.huawei.toolbar.ui.MiniWindow;
 
 public class ToolbarService extends Service
 {
-    private static final int WINDOW_MINI_TAG = 1;
-    
-    public static final int WINDOW_BACK_TAG = 2;
-    
-    public static final int WINDOW_CLOSE_TAG = 3;
+    //    public static final int WINDOW_MINI_TAG = 1;
+    //    
+    //    public static final int WINDOW_BACK_TAG = 2;
+    //    
+    //    public static final int WINDOW_CLOSE_TAG = 3;
     
     private Timer mTimer;
     
@@ -32,42 +32,14 @@ public class ToolbarService extends Service
     
     private MainWindow mMainWindow;
     
+    private ViewManager handler = new ViewManager();
+    
     private TimerTask mTask = new TimerTask()
     {
         @Override
         public void run()
         {
-            handler.sendEmptyMessage(WINDOW_MINI_TAG);
-        }
-    };
-    
-    public Handler handler = new Handler()
-    {
-        @Override
-        public void handleMessage(Message msg)
-        {
-            super.handleMessage(msg);
-            switch (msg.what)
-            {
-                case WINDOW_MINI_TAG:
-                    if (!MainWindow.getIsBackWindowAdded())
-                    {
-                        mMiniWindow.create();
-                    }
-                    break;
-                
-                case WINDOW_BACK_TAG:
-                    mMiniWindow.remove();
-                    mMainWindow.create();
-                    break;
-                    
-                case WINDOW_CLOSE_TAG:
-                    mMainWindow.remove();
-                    break;
-                    
-                default:
-                    break;
-            }
+            handler.sendEmptyMessage(ViewManager.WINDOW_MINI);
         }
     };
     
@@ -85,8 +57,6 @@ public class ToolbarService extends Service
             (WindowManager) ToolbarApplication.getInstance()
                 .getSystemService(Context.WINDOW_SERVICE);
         
-        mMiniWindow = new MiniWindow(handler);
-        mMainWindow = new MainWindow(handler);
         super.onCreate();
     }
     
@@ -118,9 +88,7 @@ public class ToolbarService extends Service
             mTimer.cancel();
             mTimer = null;
         }
-        mMainWindow.remove();
-        mMiniWindow.remove();
-        
+        handler.sendEmptyMessage(ViewManager.WINDOW_DESTROY);
         super.onDestroy();
     }
 }

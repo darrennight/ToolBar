@@ -15,6 +15,7 @@ import com.huawei.toolbar.MyParams;
 import com.huawei.toolbar.R;
 import com.huawei.toolbar.ToolbarApplication;
 import com.huawei.toolbar.ToolbarService;
+import com.huawei.toolbar.ViewManager;
 
 public class MiniWindow implements OnTouchListener, OnClickListener
 {
@@ -137,7 +138,7 @@ public class MiniWindow implements OnTouchListener, OnClickListener
     {
         if (mMiniBtn == v)
         {
-            mHandler.sendEmptyMessage(ToolbarService.WINDOW_BACK_TAG);
+            mHandler.sendEmptyMessage(ViewManager.WINDOW_BACK);
         }
     }
 }

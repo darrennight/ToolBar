@@ -12,6 +12,7 @@ import com.huawei.toolbar.MyParams;
 import com.huawei.toolbar.R;
 import com.huawei.toolbar.ToolbarApplication;
 import com.huawei.toolbar.ToolbarService;
+import com.huawei.toolbar.ViewManager;
 
 public class MainWindow implements OnClickListener
 {
@@ -79,7 +80,7 @@ public class MainWindow implements OnClickListener
     {
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(ToolbarService.WINDOW_CLOSE_TAG);
+            mHandler.sendEmptyMessage(ViewManager.WINDOW_CLOSE);
         }
     }
 }

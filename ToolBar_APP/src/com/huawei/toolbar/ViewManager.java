@@ -9,15 +9,19 @@ import com.huawei.toolbar.ui.MiniWindow;
 
 public class ViewManager extends Handler
 {
-    public static final int WINDOW_MINI_TAG = 1;
+    public static final int WINDOW_MINI = 1;
     
-    public static final int WINDOW_BACK_TAG = 2;
+    public static final int WINDOW_BACK = 2;
+    
+    public static final int WINDOW_CLOSE = 3;
+    
+    public static final int WINDOW_DESTROY = 4;
     
     private Context context;
     
-    private MiniWindow miniWindow;
+    private MiniWindow mMiniWindow;
     
-    private MainWindow mainWindow;
+    private MainWindow mMainWindow;
     
     private MyParams miniParams;
     
@@ -26,32 +30,39 @@ public class ViewManager extends Handler
     public ViewManager()
     {
         context = ToolbarApplication.getInstance();
-        miniWindow = new MiniWindow(this);
-        mainWindow = new MainWindow(this);
+        mMiniWindow = new MiniWindow(this);
+        mMainWindow = new MainWindow(this);
         
     }
     
-//    @Override
-//    public void handleMessage(Message msg)
-//    {
-//        // TODO Auto-generated method stub
-//        super.handleMessage(msg);
-//        switch (msg.what)
-//        {
-//            case WINDOW_MINI_TAG:
-//                if (!MainWindow.getIsBackWindowAdded())
-//                {
-//                    miniWindow.create();
-//                }
-//                break;
-//            
-//            case WINDOW_BACK_TAG:
-//                miniWindow.remove();
-//                mainWindow.create();
-//                break;
-//            
-//            default:
-//                break;
-//        }
-//    }
+    public void handleMessage(Message msg)
+    {
+        super.handleMessage(msg);
+        switch (msg.what)
+        {
+            case WINDOW_MINI:
+                if (!MainWindow.getIsBackWindowAdded())
+                {
+                    mMiniWindow.create();
+                }
+                break;
+            
+            case WINDOW_BACK:
+                mMiniWindow.remove();
+                mMainWindow.create();
+                break;
+            
+            case WINDOW_CLOSE:
+                mMainWindow.remove();
+                break;
+            
+            case WINDOW_DESTROY:
+                mMainWindow.remove();
+                mMiniWindow.remove();
+                break;
+            
+            default:
+                break;
+        }
+    }
 }
