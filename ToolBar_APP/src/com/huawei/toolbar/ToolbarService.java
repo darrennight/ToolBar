@@ -22,15 +22,17 @@ public class ToolbarService extends Service
     
     public static final int WINDOW_BACK_TAG = 2;
     
+    public static final int WINDOW_CLOSE_TAG = 3;
+    
     private Timer mTimer;
     
     private WindowManager mManager;
     
     private MiniWindow mMiniWindow;
     
-    private MainWindow mBackWindow;
+    private MainWindow mMainWindow;
     
-    private TimerTask task = new TimerTask()
+    private TimerTask mTask = new TimerTask()
     {
         @Override
         public void run()
@@ -56,9 +58,13 @@ public class ToolbarService extends Service
                 
                 case WINDOW_BACK_TAG:
                     mMiniWindow.remove();
-                    mBackWindow.create();
+                    mMainWindow.create();
                     break;
-                
+                    
+                case WINDOW_CLOSE_TAG:
+                    mMainWindow.remove();
+                    break;
+                    
                 default:
                     break;
             }
@@ -76,11 +82,11 @@ public class ToolbarService extends Service
     {
         Log.i("Service", "onCreate");
         mManager =
-            (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+            (WindowManager) ToolbarApplication.getInstance()
+                .getSystemService(Context.WINDOW_SERVICE);
         
-        mMiniWindow =
-            new MiniWindow(getApplicationContext(), mManager, handler);
-        mBackWindow = new MainWindow(getApplicationContext(), mManager);
+        mMiniWindow = new MiniWindow(handler);
+        mMainWindow = new MainWindow(handler);
         super.onCreate();
     }
     
@@ -92,7 +98,7 @@ public class ToolbarService extends Service
         if (mTimer == null)
         {
             mTimer = new Timer();
-            mTimer.scheduleAtFixedRate(task, 0, 500);
+            mTimer.scheduleAtFixedRate(mTask, 0, 500);
         }
         
         return super.onStartCommand(intent, flags, startId);
@@ -112,7 +118,7 @@ public class ToolbarService extends Service
             mTimer.cancel();
             mTimer = null;
         }
-        mBackWindow.remove();
+        mMainWindow.remove();
         mMiniWindow.remove();
         
         super.onDestroy();

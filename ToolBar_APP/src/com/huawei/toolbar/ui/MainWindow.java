@@ -1,13 +1,17 @@
 package com.huawei.toolbar.ui;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.huawei.toolbar.MyParams;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.ToolbarApplication;
+import com.huawei.toolbar.ToolbarService;
 
 public class MainWindow implements OnClickListener
 {
@@ -26,14 +30,19 @@ public class MainWindow implements OnClickListener
     
     private MyParams mBackParams;
     
-    private int screenH, screenW;
+    private int mScreenH;
     
-    public MainWindow(Context context, WindowManager manager)
+    private Handler mHandler;
+    
+    private Button mCloseBtn;
+    
+    public MainWindow(Handler handler)
     {
-        this.mContext = context;
-        this.mManager = manager;
-        screenH = mManager.getDefaultDisplay().getHeight();
-        screenW = mManager.getDefaultDisplay().getWidth();
+        this.mHandler = handler;
+        mContext = ToolbarApplication.getInstance();
+        mManager =
+            (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        mScreenH = mManager.getDefaultDisplay().getHeight();
     }
     
     public void create()
@@ -41,11 +50,13 @@ public class MainWindow implements OnClickListener
         if (!isBackWindowAdded)
         {
             mBackWindow =
-                LayoutInflater.from(mContext)
-                    .inflate(R.layout.manager, null);
+                LayoutInflater.from(mContext).inflate(R.layout.manager, null);
+            
+            mCloseBtn = (Button) mBackWindow.findViewById(R.id.close_btn);
+            mCloseBtn.setOnClickListener(this);
             
             mBackParams = new MyParams();
-            mBackParams.y = screenH / 4;
+            mBackParams.y = mScreenH / 4;
             
             mManager.addView(mBackWindow, mBackParams);
             isBackWindowAdded = true;
@@ -62,10 +73,13 @@ public class MainWindow implements OnClickListener
             isBackWindowAdded = false;
         }
     }
-
+    
     @Override
     public void onClick(View v)
     {
-        
+        if (mCloseBtn == v)
+        {
+            mHandler.sendEmptyMessage(ToolbarService.WINDOW_CLOSE_TAG);
+        }
     }
 }

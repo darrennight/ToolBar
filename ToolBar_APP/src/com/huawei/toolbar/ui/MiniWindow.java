@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.huawei.toolbar.MyParams;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.ToolbarApplication;
 import com.huawei.toolbar.ToolbarService;
 
 public class MiniWindow implements OnTouchListener, OnClickListener
@@ -34,31 +35,32 @@ public class MiniWindow implements OnTouchListener, OnClickListener
     
     private MyParams mMiniParams;
     
-    private int startX, startY;
+    private int mStartX, mStartY;
     
-    private int paramsX, paramsY;
+    private int mParamsX, mParamsY;
     
     private int moveX, moveY;
     
-    private int screenH, screenW;
+    private int mScreenH, mScreenW;
     
     private View mMiniWindow;
     
-    public MiniWindow(Context context, WindowManager manager, Handler handler)
+    public MiniWindow(Handler handler)
     {
-        this.mManager = manager;
-        this.mContext = context;
         this.mHandler = handler;
+        mContext = ToolbarApplication.getInstance();
+        mManager =
+            (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         mMiniWindow = inflater.inflate(R.layout.mini_view, null);
         
-        screenH = mManager.getDefaultDisplay().getHeight();
-        screenW = mManager.getDefaultDisplay().getWidth();
+        mScreenH = mManager.getDefaultDisplay().getHeight();
+        mScreenW = mManager.getDefaultDisplay().getWidth();
         
         mMiniParams = new MyParams();
         mMiniParams.gravity = Gravity.LEFT | Gravity.TOP;
-        mMiniParams.x = screenW;
-        mMiniParams.y = screenH / 3;
+        mMiniParams.x = mScreenW;
+        mMiniParams.y = mScreenH / 3;
         
         mMiniBtn = (Button) mMiniWindow.findViewById(R.id.mini_btn);
         mMiniBtn.setOnTouchListener(this);
@@ -93,17 +95,17 @@ public class MiniWindow implements OnTouchListener, OnClickListener
             switch (event.getAction())
             {
                 case MotionEvent.ACTION_DOWN:
-                    startX = (int) event.getRawX();
-                    startY = (int) event.getRawY();
-                    paramsX = mMiniParams.x;
-                    paramsY = mMiniParams.y;
+                    mStartX = (int) event.getRawX();
+                    mStartY = (int) event.getRawY();
+                    mParamsX = mMiniParams.x;
+                    mParamsY = mMiniParams.y;
                     break;
                 
                 case MotionEvent.ACTION_MOVE:
-                    moveX = (int) event.getRawX() - startX;
-                    moveY = (int) event.getRawY() - startY;
-                    mMiniParams.x = paramsX + moveX;
-                    mMiniParams.y = paramsY + moveY;
+                    moveX = (int) event.getRawX() - mStartX;
+                    moveY = (int) event.getRawY() - mStartY;
+                    mMiniParams.x = mParamsX + moveX;
+                    mMiniParams.y = mParamsY + moveY;
                     mManager.updateViewLayout(mMiniWindow, mMiniParams);
                     break;
                 
@@ -112,9 +114,9 @@ public class MiniWindow implements OnTouchListener, OnClickListener
                     {
                         isMoved = true;
                     }
-                    if (mMiniParams.x > screenW / 2)
+                    if (mMiniParams.x > mScreenW / 2)
                     {
-                        mMiniParams.x = screenW;
+                        mMiniParams.x = mScreenW;
                     }
                     else
                     {
