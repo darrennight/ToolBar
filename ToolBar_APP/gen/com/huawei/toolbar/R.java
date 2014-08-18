@@ -37,10 +37,14 @@ public final class R {
         public static final int white_background=0x7f02000e;
     }
     public static final class id {
+        public static final int back_btn=0x7f060039;
         public static final int blue_back=0x7f06002a;
         public static final int btn_about=0x7f060017;
         public static final int btn_buy=0x7f06000b;
         public static final int btn_message=0x7f060018;
+        public static final int btn_shop1=0x7f060040;
+        public static final int btn_shop2=0x7f060045;
+        public static final int btn_shop3=0x7f06004a;
         public static final int btn_store=0x7f060016;
         public static final int close_btn=0x7f060005;
         public static final int close_image=0x7f060006;
@@ -49,12 +53,19 @@ public final class R {
         public static final int img_business=0x7f060014;
         public static final int img_message=0x7f060012;
         public static final int img_store=0x7f060010;
+        public static final int layout=0x7f060038;
         public static final int layout1=0x7f060002;
         public static final int layout2=0x7f060007;
         public static final int layout3=0x7f06000f;
+        public static final int layout4=0x7f060042;
+        public static final int layout5=0x7f060047;
         public static final int layout_back=0x7f06000e;
         public static final int layout_view=0x7f060019;
         public static final int line=0x7f06002c;
+        public static final int line_1=0x7f06003d;
+        public static final int line_2=0x7f060041;
+        public static final int line_3=0x7f060046;
+        public static final int line_4=0x7f06004b;
         public static final int main_view=0x7f060000;
         public static final int mini_btn=0x7f060037;
         public static final int operate1=0x7f06002f;
@@ -71,6 +82,12 @@ public final class R {
         public static final int txt_buy=0x7f060008;
         public static final int txt_buy_content=0x7f06000a;
         public static final int txt_buy_price=0x7f060009;
+        public static final int txt_content1=0x7f06003e;
+        public static final int txt_content1_detail2=0x7f060044;
+        public static final int txt_content1_detail3=0x7f060049;
+        public static final int txt_content1_detaill=0x7f06003f;
+        public static final int txt_content2=0x7f060043;
+        public static final int txt_content3=0x7f060048;
         public static final int txt_flow=0x7f06001c;
         public static final int txt_flow_used=0x7f06001d;
         public static final int txt_flow_used_line=0x7f06001f;
@@ -88,6 +105,9 @@ public final class R {
         public static final int txt_remain=0x7f060033;
         public static final int txt_remain_num=0x7f06002d;
         public static final int txt_store=0x7f060011;
+        public static final int txt_tab1=0x7f06003a;
+        public static final int txt_tab2=0x7f06003b;
+        public static final int txt_tab3=0x7f06003c;
         public static final int txt_title=0x7f060004;
         public static final int txt_used=0x7f060030;
         public static final int txt_used_mb=0x7f060032;
@@ -100,6 +120,7 @@ public final class R {
         public static final int main=0x7f030002;
         public static final int manager=0x7f030003;
         public static final int mini_view=0x7f030004;
+        public static final int shop_view=0x7f030005;
     }
     public static final class string {
         public static final int about=0x7f05001e;

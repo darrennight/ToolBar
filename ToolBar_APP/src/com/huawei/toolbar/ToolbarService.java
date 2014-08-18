@@ -4,33 +4,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
-import android.view.WindowManager;
-
-import com.huawei.toolbar.ui.MainWindow;
-import com.huawei.toolbar.ui.MiniWindow;
 
 public class ToolbarService extends Service
 {
-    //    public static final int WINDOW_MINI_TAG = 1;
-    //    
-    //    public static final int WINDOW_BACK_TAG = 2;
-    //    
-    //    public static final int WINDOW_CLOSE_TAG = 3;
-    
+    /**
+     * 定时检测页面状态
+     */
     private Timer mTimer;
-    
-    private WindowManager mManager;
-    
-    private MiniWindow mMiniWindow;
-    
-    private MainWindow mMainWindow;
     
     private ViewManager handler = new ViewManager();
     
@@ -39,7 +23,7 @@ public class ToolbarService extends Service
         @Override
         public void run()
         {
-            handler.sendEmptyMessage(ViewManager.WINDOW_MINI);
+            handler.sendEmptyMessage(GlobleConstants.WindowType.WINDOW_MINI);
         }
     };
     
@@ -52,11 +36,6 @@ public class ToolbarService extends Service
     @Override
     public void onCreate()
     {
-        Log.i("Service", "onCreate");
-        mManager =
-            (WindowManager) ToolbarApplication.getInstance()
-                .getSystemService(Context.WINDOW_SERVICE);
-        
         super.onCreate();
     }
     
@@ -88,7 +67,7 @@ public class ToolbarService extends Service
             mTimer.cancel();
             mTimer = null;
         }
-        handler.sendEmptyMessage(ViewManager.WINDOW_DESTROY);
+        handler.sendEmptyMessage(GlobleConstants.OprationType.WINDOW_CLOSEALL);
         super.onDestroy();
     }
 }

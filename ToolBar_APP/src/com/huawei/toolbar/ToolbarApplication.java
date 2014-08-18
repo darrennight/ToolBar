@@ -2,6 +2,11 @@ package com.huawei.toolbar;
 
 import android.app.Application;
 
+/**
+ * 应用application
+ * @author wWX191016
+ *
+ */
 public class ToolbarApplication extends Application
 {
     private static ToolbarApplication instance;
