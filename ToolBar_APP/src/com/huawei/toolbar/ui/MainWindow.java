@@ -11,27 +11,30 @@ public class MainWindow extends BaseWindow
 {
     private static Boolean isWindowAdded = false;
     
-    public static Boolean isMainWindowAdded()
-    {
-        return isWindowAdded;
-    }
-    
     private Button mCloseBtn;
     
     private Button mShowBtn;
     
     private Button mShopBtn;
     
+    private Button mMessageBtn;
+    
+    private Button mAboutBtn;
+    
     public MainWindow(Handler handler)
     {
         super(handler);
         
         mCloseBtn = (Button) mWindow.findViewById(R.id.close_btn);
-        mShowBtn = (Button) mWindow.findViewById(R.id.showbtn);
-        mShopBtn = (Button) mWindow.findViewById(R.id.btn_store);
         mCloseBtn.setOnClickListener(this);
+        mShowBtn = (Button) mWindow.findViewById(R.id.showbtn);
         mShowBtn.setOnClickListener(this);
+        mShopBtn = (Button) mWindow.findViewById(R.id.btn_store);
         mShopBtn.setOnClickListener(this);
+        mMessageBtn = (Button) mWindow.findViewById(R.id.btn_message);
+        mMessageBtn.setOnClickListener(this);
+        mAboutBtn = (Button) mWindow.findViewById(R.id.btn_about);
+        mAboutBtn.setOnClickListener(this);
     }
     
     @Override
@@ -59,7 +62,7 @@ public class MainWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.WINDOW_CLOSE);
+            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
         }
         if (mShowBtn == v)
         {
@@ -67,10 +70,18 @@ public class MainWindow extends BaseWindow
         }
         if (mShopBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.WINDOW_SHOP);
+            mHandler.sendEmptyMessage(GlobleConstants.WindowType.SHOP);
+        }
+        if (mMessageBtn == v)
+        {
+            mHandler.sendEmptyMessage(GlobleConstants.WindowType.MESSAGE);
+        }
+        if (mAboutBtn == v)
+        {
+            mHandler.sendEmptyMessage(GlobleConstants.WindowType.ABOUT);
         }
     }
-
+    
     @Override
     protected int setWindow()
     {

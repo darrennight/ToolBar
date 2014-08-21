@@ -17,28 +17,22 @@
             android:layout_alignParentTop="true"
             android:background="@drawable/blue_background" >
 
-            <Button
-                android:id="@+id/back_btn"
-                android:layout_width="40dip"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:background="@color/transparent" />
-
-            <ImageView
+            <!--
+                 <ImageView
                 android:id="@+id/img_back"
                 android:layout_width="17dip"
                 android:layout_height="17dip"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dip"
                 android:background="@drawable/back" />
+            -->
 
             <TextView
                 android:id="@+id/txt_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/buy_title"
+                android:text="@string/submit"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -50,7 +44,8 @@
                 android:layout_centerVertical="true"
                 android:background="@color/transparent" />
 
-            <ImageView
+            <!--
+                 <ImageView
                 android:id="@+id/close_image"
                 android:layout_width="17dip"
                 android:layout_height="17dip"
@@ -58,62 +53,45 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dip"
                 android:src="@drawable/close" />
+            -->
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/layout2"
-            android:layout_width="fill_parent"
-            android:layout_height="40dip"
-            android:layout_below="@id/layout1"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="3dip"
-            android:background="#f3f9fe"
-            android:orientation="horizontal" >
+            android:id="@+id/layout_success"
+            android:layout_width="150dip"
+            android:layout_height="50dip"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="85dip" >
+
+            <ImageView
+                android:id="@+id/feedback_success"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_centerVertical="true"
+                android:background="@drawable/buy_successful" />
 
             <TextView
                 android:id="@+id/txt_buy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="11dip"
-                android:text="@string/shop_content1"
+                android:layout_marginLeft="8dip"
+                android:layout_toRightOf="@id/feedback_success"
+                android:text="@string/feedback_success"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="17sp" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/txt_buy_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layout2"
-            android:layout_marginLeft="15dip"
-            android:layout_marginTop="8dip"
-            android:text="@string/buy_price"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/txt_buy_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txt_buy_price"
-            android:layout_marginLeft="15dip"
-            android:layout_marginRight="15dip"
-            android:layout_marginTop="8dip"
-            android:text="@string/buy_content"
-            android:textColor="@color/black"
-            android:textSize="10sp" />
-
         <Button
-            android:id="@+id/btn_buy"
+            android:id="@+id/btn_close"
             android:layout_width="100dip"
             android:layout_height="30dip"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dip"
-            android:background="@drawable/green_btn_img"
-            android:text="@string/buy_btn"
-            android:textColor="@color/white" />
+            android:background="@drawable/orange_btn"
+            android:text="@string/buy_close"
+            android:textColor="#FFFFFF" />
     </RelativeLayout>
 
 </RelativeLayout>

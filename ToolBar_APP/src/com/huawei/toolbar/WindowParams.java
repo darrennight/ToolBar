@@ -17,7 +17,9 @@ public class WindowParams extends WindowManager.LayoutParams
     {
         type = LayoutParams.TYPE_SYSTEM_ALERT;
         format = PixelFormat.RGBA_8888;
-        flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        flags =
+            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         width = LayoutParams.WRAP_CONTENT;
         height = LayoutParams.WRAP_CONTENT;
         gravity = Gravity.TOP;

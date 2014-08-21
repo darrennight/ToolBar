@@ -111,7 +111,7 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
     {
         if (mMiniBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.WINDOW_MAIN);
+            mHandler.sendEmptyMessage(GlobleConstants.WindowType.MAIN);
         }
     }
     

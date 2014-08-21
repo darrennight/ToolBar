@@ -1,13 +1,13 @@
 package com.huawei.toolbar.ui;
 
+import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.R;
+
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
-import com.huawei.toolbar.GlobleConstants;
-import com.huawei.toolbar.R;
-
-public class ShopWindow extends BaseWindow
+public class BuyWindow extends BaseWindow
 {
     private static Boolean isWindowAdded = false;
     
@@ -15,9 +15,9 @@ public class ShopWindow extends BaseWindow
     
     private Button mCloseBtn;
     
-    private Button mBuyBtn1, mBuyBtn2, mBuyBtn3;
+    private Button mBuyBtn;
     
-    public ShopWindow(Handler handler)
+    public BuyWindow(Handler handler)
     {
         super(handler);
         
@@ -25,12 +25,8 @@ public class ShopWindow extends BaseWindow
         mBackBtn.setOnClickListener(this);
         mCloseBtn = (Button) mWindow.findViewById(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
-        mBuyBtn1 = (Button) mWindow.findViewById(R.id.btn_shop1);
-        mBuyBtn1.setOnClickListener(this);
-        mBuyBtn2 = (Button) mWindow.findViewById(R.id.btn_shop2);
-        mBuyBtn2.setOnClickListener(this);
-        mBuyBtn3 = (Button) mWindow.findViewById(R.id.btn_shop3);
-        mBuyBtn3.setOnClickListener(this);
+        mBuyBtn = (Button) mWindow.findViewById(R.id.btn_buy);
+        mBuyBtn.setOnClickListener(this);
     }
     
     @Override
@@ -44,24 +40,16 @@ public class ShopWindow extends BaseWindow
         {
             mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
         }
-        if (mBuyBtn1 == v)
+        if (mBuyBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.BUY);
-        }
-        if (mBuyBtn2 == v)
-        {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.BUY);
-        }
-        if (mBuyBtn3 == v)
-        {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.BUY);
+            mHandler.sendEmptyMessage(GlobleConstants.WindowType.BUY_SUCCESS);
         }
     }
     
     @Override
     protected int setWindow()
     {
-        return R.layout.shop_view;
+        return R.layout.buy_view;
     }
     
     @Override
