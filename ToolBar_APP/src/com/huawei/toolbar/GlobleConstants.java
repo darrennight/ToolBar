@@ -65,6 +65,26 @@ public class GlobleConstants
          * 播放前页面
          */
         int BEFORE_PLAY = BASIC + 10;
+        
+        /**
+         * 播放后页面
+         */
+        int AFTER_PLAY = BASIC + 11;
+        
+        /**
+         * 流量报警页面
+         */
+        int WARN = BASIC + 12;
+        
+        /**
+         * 中奖页面
+         */
+        int LUCKY = BASIC + 13;
+        
+        /**
+         * 未中奖页面
+         */
+        int UNLUCKY = BASIC + 14;
     }
     
     /**

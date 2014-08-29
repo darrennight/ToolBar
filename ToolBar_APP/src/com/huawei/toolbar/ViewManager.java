@@ -5,18 +5,23 @@ import java.util.List;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.huawei.toolbar.ui.AboutWindow;
+import com.huawei.toolbar.ui.AfterPlayWindow;
 import com.huawei.toolbar.ui.BaseWindow;
 import com.huawei.toolbar.ui.BeforePlayWindow;
 import com.huawei.toolbar.ui.BuySuccessWindow;
 import com.huawei.toolbar.ui.BuyWindow;
 import com.huawei.toolbar.ui.FeedbackSuccessWindow;
 import com.huawei.toolbar.ui.FeedbackWindow;
+import com.huawei.toolbar.ui.LuckyWindow;
 import com.huawei.toolbar.ui.MainWindow;
 import com.huawei.toolbar.ui.MessageWindow;
 import com.huawei.toolbar.ui.MiniWindow;
 import com.huawei.toolbar.ui.ShopWindow;
+import com.huawei.toolbar.ui.UnluckyWindow;
+import com.huawei.toolbar.ui.WarnWindow;
 
 /**
  * 管理window展示
@@ -56,6 +61,14 @@ public class ViewManager extends Handler
     
     private BeforePlayWindow mBeforePlayWindow;
     
+    private AfterPlayWindow mAfterPlayWindow;
+    
+    private WarnWindow mWarnWindow;
+    
+    private LuckyWindow mLuckyWindow;
+    
+    private UnluckyWindow mUnluckyWindow;
+    
     public ViewManager()
     {
         windows = new ArrayList<BaseWindow>();
@@ -69,6 +82,10 @@ public class ViewManager extends Handler
         mFeedbackWindow = new FeedbackWindow(this);
         mFeedbackSuccessWindow = new FeedbackSuccessWindow(this);
         mBeforePlayWindow = new BeforePlayWindow(this);
+        mAfterPlayWindow = new AfterPlayWindow(this);
+        mWarnWindow = new WarnWindow(this);
+        mLuckyWindow = new LuckyWindow(this);
+        mUnluckyWindow = new UnluckyWindow(this);
     }
     
     public void handleMessage(Message msg)
@@ -119,6 +136,26 @@ public class ViewManager extends Handler
                 windows.add(mBeforePlayWindow);
                 break;
             
+            case GlobleConstants.WindowType.AFTER_PLAY:
+                windows.clear();
+                windows.add(mAfterPlayWindow);
+                break;
+            
+            case GlobleConstants.WindowType.WARN:
+                windows.clear();
+                windows.add(mWarnWindow);
+                break;
+            
+            case GlobleConstants.WindowType.LUCKY:
+                windows.clear();
+                windows.add(mLuckyWindow);
+                break;
+            
+            case GlobleConstants.WindowType.UNLUCKY:
+                windows.clear();
+                windows.add(mUnluckyWindow);
+                break;
+            
             case GlobleConstants.OprationType.BACK:
                 if (!windows.isEmpty())
                 {
@@ -148,11 +185,11 @@ public class ViewManager extends Handler
             {
                 lastWindow.remove();
             }
-            if (!windows.isEmpty())
+            if (currentWindow != null)
             {
                 currentWindow.create();
-                lastWindow = currentWindow;
             }
+            lastWindow = currentWindow;
         }
     }
 }

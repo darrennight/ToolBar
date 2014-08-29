@@ -1,13 +1,13 @@
 package com.huawei.toolbar.ui;
 
-import com.huawei.toolbar.GlobleConstants;
-import com.huawei.toolbar.R;
-
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
-public class BeforePlayWindow extends BaseWindow
+import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.R;
+
+public class AfterPlayWindow extends BaseWindow
 {
     private static Boolean isWindowAdded = false;
     
@@ -15,7 +15,7 @@ public class BeforePlayWindow extends BaseWindow
     
     private Button mShopBtn;
     
-    public BeforePlayWindow(Handler handler)
+    public AfterPlayWindow(Handler handler)
     {
         super(handler);
         
@@ -41,7 +41,7 @@ public class BeforePlayWindow extends BaseWindow
     @Override
     protected int setWindow()
     {
-        return R.layout.before_play_view;
+        return R.layout.after_play_view;
     }
     
     @Override

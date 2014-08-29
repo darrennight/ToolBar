@@ -7,22 +7,18 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
-public class BeforePlayWindow extends BaseWindow
+public class LuckyWindow extends BaseWindow
 {
     private static Boolean isWindowAdded = false;
     
     private Button mCloseBtn;
     
-    private Button mShopBtn;
-    
-    public BeforePlayWindow(Handler handler)
+    public LuckyWindow(Handler handler)
     {
         super(handler);
         
         mCloseBtn = (Button) mWindow.findViewById(R.id.close_btn);
         mCloseBtn.setOnClickListener(this);
-        mShopBtn = (Button) mWindow.findViewById(R.id.shop_btn);
-        mShopBtn.setOnClickListener(this);
     }
     
     @Override
@@ -32,16 +28,12 @@ public class BeforePlayWindow extends BaseWindow
         {
             mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
         }
-        if (mShopBtn == v)
-        {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.SHOP);
-        }
     }
     
     @Override
     protected int setWindow()
     {
-        return R.layout.before_play_view;
+        return R.layout.lucky_view;
     }
     
     @Override

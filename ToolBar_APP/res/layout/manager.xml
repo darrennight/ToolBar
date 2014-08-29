@@ -322,100 +322,102 @@
                 android:layout_marginRight="3dip"
                 android:background="@drawable/cut_line" />
 
-            <TextView
-                android:id="@+id/txt_remain_num"
+            <RelativeLayout
+                android:id="@+id/left_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/line"
                 android:layout_marginLeft="38dip"
-                android:layout_marginTop="30dip"
-                android:text="@string/remain_num"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp" />
+                android:layout_marginTop="30dip" >
 
-            <TextView
-                android:id="@+id/txt_mb"
+                <TextView
+                    android:id="@+id/txt_remain_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/remain_num"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/txt_mb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/txt_remain_num"
+                    android:layout_marginLeft="3dip"
+                    android:layout_toRightOf="@id/txt_remain_num"
+                    android:text="@string/mb"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/txt_remain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_mb"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/remain"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/right_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_below="@id/line"
-                android:layout_marginLeft="3dip"
-                android:layout_marginTop="35dip"
-                android:layout_toRightOf="@id/txt_remain_num"
-                android:text="@string/mb"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp" />
+                android:layout_marginRight="38dip"
+                android:layout_marginTop="30dip" >
+
+                <TextView
+                    android:id="@+id/txt_used"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_used_num"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/used"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/txt_used_mb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/txt_used_num"
+                    android:layout_marginLeft="3dip"
+                    android:layout_toRightOf="@id/txt_used_num"
+                    android:text="@string/mb"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/txt_used_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/used_num"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp" />
+            </RelativeLayout>
 
             <ImageView
-                android:id="@+id/operate1"
-                android:layout_width="70dip"
-                android:layout_height="70dip"
-                android:layout_below="@id/line"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="13dip"
-                android:src="@drawable/inside_circle" />
-
-            <TextView
-                android:id="@+id/txt_used"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/txt_used_num"
-                android:layout_below="@+id/txt_used_num"
-                android:text="@string/used"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/txt_used_mb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/txt_mb"
-                android:layout_alignBottom="@+id/txt_mb"
-                android:layout_alignRight="@+id/txt_used"
-                android:text="@string/mb"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/txt_remain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/txt_mb"
-                android:layout_below="@+id/txt_mb"
-                android:text="@string/remain"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/txt_used_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/txt_remain_num"
-                android:layout_alignBottom="@+id/txt_remain_num"
-                android:layout_marginLeft="29dp"
-                android:layout_toRightOf="@+id/operate1"
-                android:text="@string/used_num"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp" />
-            
-            <ImageView 
                 android:id="@+id/down_img"
                 android:layout_width="12dip"
                 android:layout_height="12dip"
-                android:src="@drawable/down_img"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dip"
                 android:layout_marginRight="10dip"
-                android:layout_marginBottom="10dip" />
-            
-            <ImageView 
+                android:src="@drawable/down_img" />
+
+            <ImageView
                 android:id="@+id/up_img"
                 android:layout_width="12dip"
                 android:layout_height="12dip"
-                android:src="@drawable/up_img"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="10dip"
+                android:layout_alignParentRight="true"
                 android:layout_marginBottom="10dip"
+                android:layout_marginRight="10dip"
+                android:src="@drawable/up_img"
                 android:visibility="gone" />
 
             <Button
@@ -424,6 +426,26 @@
                 android:layout_height="170dip"
                 android:layout_below="@id/line"
                 android:background="#00000000" />
+
+            <RelativeLayout
+                android:id="@+id/circle"
+                android:layout_width="70dip"
+                android:layout_height="70dip"
+                android:layout_below="@id/line"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="13dip" >
+
+                <com.huawei.toolbar.ui.WaterView
+                    android:id="@+id/water"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:id="@+id/water_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent" />
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 

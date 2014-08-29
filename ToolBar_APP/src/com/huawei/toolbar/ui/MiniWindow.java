@@ -5,6 +5,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import com.huawei.toolbar.GlobleConstants;
@@ -46,6 +48,14 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
         if (!isMiniWindowAdded)
         {
             mManager.addView(mWindow, mParams);
+            if (mParams.x > mScreenW / 2)
+            {
+                AnimationRight();
+            }
+            else
+            {
+                AnimationLeft();
+            }
             isMiniWindowAdded = true;
         }
     }
@@ -69,6 +79,8 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
             switch (event.getAction())
             {
                 case MotionEvent.ACTION_DOWN:
+                    mMiniBtn.clearAnimation();
+                    mMiniBtn.bringToFront();
                     mStartX = (int) event.getRawX();
                     mStartY = (int) event.getRawY();
                     mParamsX = mParams.x;
@@ -84,19 +96,25 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
                     break;
                 
                 case MotionEvent.ACTION_UP:
-                    if (moveX > 10 || moveY > 10)
+                    if (Math.abs(moveX) > 10 || Math.abs(moveY) > 10)
                     {
                         isMoved = true;
                     }
                     if (mParams.x > mScreenW / 2)
                     {
-                        mParams.x = mScreenW;
+                        mParams.x = mScreenW - mMiniBtn.getWidth();
+                        mManager.updateViewLayout(mWindow, mParams);
+                        AnimationRight();
                     }
                     else
                     {
                         mParams.x = 0;
+                        mManager.updateViewLayout(mWindow, mParams);
+                        AnimationLeft();
                     }
-                    mManager.updateViewLayout(mWindow, mParams);
+                    moveX = 0;
+                    moveY = 0;
+                    
                     break;
                 
                 default:
@@ -119,5 +137,29 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
     protected int setWindow()
     {
         return R.layout.mini_view;
+    }
+    
+    /**
+     * MiniWindow 依靠在右边的动画
+     */
+    private void AnimationRight()
+    {
+        Animation animation =
+            AnimationUtils.loadAnimation(mContext, R.anim.hide_right);
+        animation.setFillAfter(true);
+        mMiniBtn.clearAnimation();
+        mMiniBtn.startAnimation(animation);
+    }
+    
+    /**
+     * MiniWindow 依靠在左边的动画
+     */
+    private void AnimationLeft()
+    {
+        Animation animation =
+            AnimationUtils.loadAnimation(mContext, R.anim.hide_left);
+        animation.setFillAfter(true);
+        mMiniBtn.clearAnimation();
+        mMiniBtn.startAnimation(animation);
     }
 }

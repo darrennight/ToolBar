@@ -1,8 +1,13 @@
 package com.huawei.toolbar.ui;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
@@ -21,6 +26,19 @@ public class MainWindow extends BaseWindow
     
     private Button mAboutBtn;
     
+    private ImageView mUpImage;
+    
+    private ImageView mDownImage;
+    
+    private Button mWaterBtn;
+    
+    private RelativeLayout mFlowLayout;
+    
+    /**
+     * 记录点击展开流量展示的次数
+     */
+    private int btn_clickNum;
+    
     public MainWindow(Handler handler)
     {
         super(handler);
@@ -35,6 +53,11 @@ public class MainWindow extends BaseWindow
         mMessageBtn.setOnClickListener(this);
         mAboutBtn = (Button) mWindow.findViewById(R.id.btn_about);
         mAboutBtn.setOnClickListener(this);
+        mUpImage = (ImageView) mWindow.findViewById(R.id.up_img);
+        mDownImage = (ImageView) mWindow.findViewById(R.id.down_img);
+        mFlowLayout = (RelativeLayout) mWindow.findViewById(R.id.layout_view);
+        mWaterBtn = (Button) mWindow.findViewById(R.id.water_btn);
+        mWaterBtn.setOnClickListener(this);
     }
     
     @Override
@@ -43,6 +66,7 @@ public class MainWindow extends BaseWindow
         if (!isWindowAdded)
         {
             mManager.addView(mWindow, mParams);
+            btn_clickNum = 0;
             isWindowAdded = true;
         }
     }
@@ -57,6 +81,12 @@ public class MainWindow extends BaseWindow
         }
     }
     
+    /* (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    /* (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
     @Override
     public void onClick(View v)
     {
@@ -66,7 +96,34 @@ public class MainWindow extends BaseWindow
         }
         if (mShowBtn == v)
         {
-            
+            btn_clickNum++;
+            if (btn_clickNum % 2 == 1)
+            {
+                Animation animationDown =
+                    AnimationUtils.loadAnimation(mContext, R.anim.scale_down);
+                animationDown.setFillAfter(true);
+                mFlowLayout.clearAnimation();
+                mFlowLayout.startAnimation(animationDown);
+                mDownImage.setVisibility(View.GONE);
+                mUpImage.setVisibility(View.VISIBLE);
+                mMessageBtn.setClickable(false);
+                mAboutBtn.setClickable(false);
+                mShopBtn.setClickable(false);
+                
+            }
+            else if (btn_clickNum % 2 == 0)
+            {
+                Animation animationUp =
+                    AnimationUtils.loadAnimation(mContext, R.anim.scale_up);
+                animationUp.setFillAfter(true);
+                mFlowLayout.clearAnimation();
+                mFlowLayout.startAnimation(animationUp);
+                mDownImage.setVisibility(View.VISIBLE);
+                mUpImage.setVisibility(View.GONE);
+                mMessageBtn.setClickable(true);
+                mAboutBtn.setClickable(true);
+                mShopBtn.setClickable(true);
+            }
         }
         if (mShopBtn == v)
         {
@@ -79,6 +136,10 @@ public class MainWindow extends BaseWindow
         if (mAboutBtn == v)
         {
             mHandler.sendEmptyMessage(GlobleConstants.WindowType.ABOUT);
+        }
+        if (mWaterBtn == v)
+        {
+            WaterView.getInstance().setProgress((int) (Math.random() * 100));
         }
     }
     

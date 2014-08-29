@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
-public class BeforePlayWindow extends BaseWindow
+public class UnluckyWindow extends BaseWindow
 {
     private static Boolean isWindowAdded = false;
     
@@ -15,7 +15,7 @@ public class BeforePlayWindow extends BaseWindow
     
     private Button mShopBtn;
     
-    public BeforePlayWindow(Handler handler)
+    public UnluckyWindow(Handler handler)
     {
         super(handler);
         
@@ -41,7 +41,7 @@ public class BeforePlayWindow extends BaseWindow
     @Override
     protected int setWindow()
     {
-        return R.layout.before_play_view;
+        return R.layout.unlucky_view;
     }
     
     @Override

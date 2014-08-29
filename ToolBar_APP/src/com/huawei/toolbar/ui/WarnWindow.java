@@ -1,13 +1,13 @@
 package com.huawei.toolbar.ui;
 
-import com.huawei.toolbar.GlobleConstants;
-import com.huawei.toolbar.R;
-
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
-public class BeforePlayWindow extends BaseWindow
+import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.R;
+
+public class WarnWindow extends BaseWindow
 {
     private static Boolean isWindowAdded = false;
     
@@ -15,7 +15,9 @@ public class BeforePlayWindow extends BaseWindow
     
     private Button mShopBtn;
     
-    public BeforePlayWindow(Handler handler)
+    private Button mDraw;
+    
+    public WarnWindow(Handler handler)
     {
         super(handler);
         
@@ -23,6 +25,8 @@ public class BeforePlayWindow extends BaseWindow
         mCloseBtn.setOnClickListener(this);
         mShopBtn = (Button) mWindow.findViewById(R.id.shop_btn);
         mShopBtn.setOnClickListener(this);
+        mDraw = (Button) mWindow.findViewById(R.id.lucky_btn);
+        mDraw.setOnClickListener(this);
     }
     
     @Override
@@ -36,12 +40,24 @@ public class BeforePlayWindow extends BaseWindow
         {
             mHandler.sendEmptyMessage(GlobleConstants.WindowType.SHOP);
         }
+        if (mDraw == v)
+        {
+            int i = (int) (Math.random() * 2);
+            if (i == 0)
+            {
+                mHandler.sendEmptyMessage(GlobleConstants.WindowType.LUCKY);
+            }
+            else
+            {
+                mHandler.sendEmptyMessage(GlobleConstants.WindowType.UNLUCKY);
+            }
+        }
     }
     
     @Override
     protected int setWindow()
     {
-        return R.layout.before_play_view;
+        return R.layout.warn_play_view;
     }
     
     @Override
