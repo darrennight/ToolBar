@@ -1,4 +1,6 @@
-package com.huawei.toolbar;
+package com.huawei.toolbar.uiutil;
+
+import com.huawei.toolbar.ToolbarApplication;
 
 import android.content.Context;
 import android.graphics.PixelFormat;

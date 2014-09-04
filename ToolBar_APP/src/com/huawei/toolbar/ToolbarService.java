@@ -47,7 +47,7 @@ public class ToolbarService extends Service
                 {
                     handler.sendEmptyMessage(GlobleConstants.WindowType.BEFORE_PLAY);
                 }
-                else if (currentActivity.equals("com.huawei.toolbar.MainActivity"))
+                else if (currentActivity.equals("com.huawei.toolbar.ui.MainActivity"))
                 {
                     handler.sendEmptyMessage(GlobleConstants.WindowType.WARN);
                 }

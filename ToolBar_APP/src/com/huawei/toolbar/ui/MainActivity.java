@@ -1,4 +1,9 @@
-package com.huawei.toolbar;
+package com.huawei.toolbar.ui;
+
+import com.huawei.toolbar.R;
+import com.huawei.toolbar.ToolbarService;
+import com.huawei.toolbar.R.id;
+import com.huawei.toolbar.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;

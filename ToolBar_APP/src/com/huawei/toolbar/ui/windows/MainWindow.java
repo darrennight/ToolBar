@@ -1,4 +1,4 @@
-package com.huawei.toolbar.ui;
+package com.huawei.toolbar.ui.windows;
 
 import android.os.Handler;
 import android.util.Log;
@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.uiutil.WaterView;
 
 public class MainWindow extends BaseWindow
 {

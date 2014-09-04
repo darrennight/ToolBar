@@ -1,6 +1,6 @@
-package com.huawei.toolbar.ui;
+package com.huawei.toolbar.uiutil;
 
-import com.huawei.toolbar.util.PresData;
+import com.huawei.toolbar.util.PresDataUtil;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,8 +14,6 @@ import android.view.View;
 public class WaterView extends View
 {
     private static WaterView instance;
-    
-    private PresData data;
     
     private final String WaterViewData = "WaterView";
     
@@ -60,7 +58,7 @@ public class WaterView extends View
     private final int mZoomY = 5;
     
     /**
-     * 每次刷新偏移角
+     * 每次刷新偏移
      */
     private final float mOffset = 0.5f;
     
@@ -84,13 +82,13 @@ public class WaterView extends View
     {
         super(context, attrs);
         instance = this;
-        data = new PresData(getContext());
-        setProgress(data.getInt(WaterViewData));
+        setProgress(PresDataUtil.getInt(WaterViewData));
         initializePainters();
     }
     
     /**
-     * 获取正在运行的waterview实例
+     * 获取waterview实例
+     * 
      * @return instance
      */
     public static WaterView getInstance()
@@ -196,7 +194,25 @@ public class WaterView extends View
     public void setProgress(int progress)
     {
         mNewProgress = progress > 100 ? 100 : progress;
-        data.save(WaterViewData, mNewProgress);
+        PresDataUtil.save(WaterViewData, mNewProgress);
+        
+        if (progress <= 50)
+        {
+            mBelowWavePaint.setColor(color_green);
+            mAboveWavePaint.setColor(color_green);
+        }
+        else if (progress > 50 && progress <= 80)
+        {
+            mBelowWavePaint.setColor(color_yellow);
+            mAboveWavePaint.setColor(color_yellow);
+        }
+        else
+        {
+            mBelowWavePaint.setColor(color_red);
+            mAboveWavePaint.setColor(color_red);
+        }
+        mAboveWavePaint.setAlpha(above_alpha);
+        mBelowWavePaint.setAlpha(below_alpha);
         
         isRefresh = true;
     }
@@ -263,24 +279,6 @@ public class WaterView extends View
                         i = (i == mNewProgress - 1) ? mNewProgress : (i + 2);
                     }
                 }
-                
-                if (i <= 50)
-                {
-                    mBelowWavePaint.setColor(color_green);
-                    mAboveWavePaint.setColor(color_green);
-                }
-                else if (i > 50 && i <= 80)
-                {
-                    mBelowWavePaint.setColor(color_yellow);
-                    mAboveWavePaint.setColor(color_yellow);
-                }
-                else
-                {
-                    mBelowWavePaint.setColor(color_red);
-                    mAboveWavePaint.setColor(color_red);
-                }
-                mBelowWavePaint.setAlpha(below_alpha);
-                mAboveWavePaint.setAlpha(above_alpha);
                 
                 mWaveToTop = (int) (getHeight() * (1f - i / 100f));
                 calculatePath();

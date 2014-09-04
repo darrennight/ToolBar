@@ -1,4 +1,4 @@
-package com.huawei.toolbar.ui;
+package com.huawei.toolbar.ui.windows;
 
 import android.content.Context;
 import android.os.Handler;
@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 
 import com.huawei.toolbar.ToolbarApplication;
-import com.huawei.toolbar.WindowParams;
+import com.huawei.toolbar.uiutil.WindowParams;
 
 public abstract class BaseWindow implements OnClickListener
 {

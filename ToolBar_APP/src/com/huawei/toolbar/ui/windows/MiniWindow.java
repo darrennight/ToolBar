@@ -1,4 +1,4 @@
-package com.huawei.toolbar.ui;
+package com.huawei.toolbar.ui.windows;
 
 import android.os.Handler;
 import android.view.Gravity;

@@ -1,5 +1,7 @@
 package com.huawei.toolbar.util;
 
+import com.huawei.toolbar.ToolbarApplication;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,28 +10,27 @@ import android.content.SharedPreferences;
  * SharedPreferences管理器
  * @author wWX191016
  */
-public class PresData
+public class PresDataUtil
 {
-    private SharedPreferences mPreferences;
+    private static SharedPreferences mPreferences;
     
-    private SharedPreferences.Editor mEditor;
-    
-    private Context mContext;
+    private static SharedPreferences.Editor mEditor;
     
     private static final String PREFS = "toolbar";
     
-    public PresData(Context context)
+    public PresDataUtil()
     {
-        this.mContext = context;
+        
     }
     
-    private void init()
+    private static void init()
     {
         mPreferences =
-            mContext.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
+            ToolbarApplication.getInstance().getSharedPreferences(PREFS,
+                Activity.MODE_PRIVATE);
     }
     
-    public void save(String string, int i)
+    public static void save(String string, int i)
     {
         init();
         mEditor = mPreferences.edit();
@@ -37,13 +38,13 @@ public class PresData
         mEditor.commit();
     }
     
-    public int getInt(String string)
+    public static int getInt(String string)
     {
         init();
         return mPreferences.getInt(string, 0);
     }
     
-    public String getString(String string)
+    public static String getString(String string)
     {
         init();
         return mPreferences.getString(string, "");

@@ -5,23 +5,22 @@ import java.util.List;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
-import com.huawei.toolbar.ui.AboutWindow;
-import com.huawei.toolbar.ui.AfterPlayWindow;
-import com.huawei.toolbar.ui.BaseWindow;
-import com.huawei.toolbar.ui.BeforePlayWindow;
-import com.huawei.toolbar.ui.BuySuccessWindow;
-import com.huawei.toolbar.ui.BuyWindow;
-import com.huawei.toolbar.ui.FeedbackSuccessWindow;
-import com.huawei.toolbar.ui.FeedbackWindow;
-import com.huawei.toolbar.ui.LuckyWindow;
-import com.huawei.toolbar.ui.MainWindow;
-import com.huawei.toolbar.ui.MessageWindow;
-import com.huawei.toolbar.ui.MiniWindow;
-import com.huawei.toolbar.ui.ShopWindow;
-import com.huawei.toolbar.ui.UnluckyWindow;
-import com.huawei.toolbar.ui.WarnWindow;
+import com.huawei.toolbar.ui.windows.AboutWindow;
+import com.huawei.toolbar.ui.windows.AfterPlayWindow;
+import com.huawei.toolbar.ui.windows.BaseWindow;
+import com.huawei.toolbar.ui.windows.BeforePlayWindow;
+import com.huawei.toolbar.ui.windows.BuySuccessWindow;
+import com.huawei.toolbar.ui.windows.BuyWindow;
+import com.huawei.toolbar.ui.windows.FeedbackSuccessWindow;
+import com.huawei.toolbar.ui.windows.FeedbackWindow;
+import com.huawei.toolbar.ui.windows.LuckyWindow;
+import com.huawei.toolbar.ui.windows.MainWindow;
+import com.huawei.toolbar.ui.windows.MessageWindow;
+import com.huawei.toolbar.ui.windows.MiniWindow;
+import com.huawei.toolbar.ui.windows.ShopWindow;
+import com.huawei.toolbar.ui.windows.UnluckyWindow;
+import com.huawei.toolbar.ui.windows.WarnWindow;
 
 /**
  * 管理window展示

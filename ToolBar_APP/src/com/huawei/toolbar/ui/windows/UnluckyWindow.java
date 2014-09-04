@@ -1,13 +1,13 @@
-package com.huawei.toolbar.ui;
+package com.huawei.toolbar.ui.windows;
+
+import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.R;
 
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
-import com.huawei.toolbar.GlobleConstants;
-import com.huawei.toolbar.R;
-
-public class WarnWindow extends BaseWindow
+public class UnluckyWindow extends BaseWindow
 {
     private static Boolean isWindowAdded = false;
     
@@ -15,9 +15,7 @@ public class WarnWindow extends BaseWindow
     
     private Button mShopBtn;
     
-    private Button mDraw;
-    
-    public WarnWindow(Handler handler)
+    public UnluckyWindow(Handler handler)
     {
         super(handler);
         
@@ -25,8 +23,6 @@ public class WarnWindow extends BaseWindow
         mCloseBtn.setOnClickListener(this);
         mShopBtn = (Button) mWindow.findViewById(R.id.shop_btn);
         mShopBtn.setOnClickListener(this);
-        mDraw = (Button) mWindow.findViewById(R.id.lucky_btn);
-        mDraw.setOnClickListener(this);
     }
     
     @Override
@@ -40,24 +36,12 @@ public class WarnWindow extends BaseWindow
         {
             mHandler.sendEmptyMessage(GlobleConstants.WindowType.SHOP);
         }
-        if (mDraw == v)
-        {
-            int i = (int) (Math.random() * 2);
-            if (i == 0)
-            {
-                mHandler.sendEmptyMessage(GlobleConstants.WindowType.LUCKY);
-            }
-            else
-            {
-                mHandler.sendEmptyMessage(GlobleConstants.WindowType.UNLUCKY);
-            }
-        }
     }
     
     @Override
     protected int setWindow()
     {
-        return R.layout.warn_play_view;
+        return R.layout.unlucky_view;
     }
     
     @Override
