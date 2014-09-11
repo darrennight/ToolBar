@@ -1,4 +1,4 @@
-package com.huawei.toolbar.ui;
+package com.huawei.toolbar.ui.activity;
 
 import com.huawei.toolbar.R;
 import com.huawei.toolbar.ToolbarService;

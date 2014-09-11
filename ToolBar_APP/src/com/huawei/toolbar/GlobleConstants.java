@@ -88,6 +88,22 @@ public class GlobleConstants
     }
     
     /**
+     * [一句话功能简述]activity 类型<BR>
+     * [功能详细描述]
+     * @author wWX191016
+     * @version [RCS Client V100R001C03, 2014-9-10] 
+     */
+    public interface ActivityType
+    {
+        int BASIC = 0x20000;
+        
+        /**
+         * 二级主activity页面
+         */
+        int SUB_MAIN = BASIC + 1;
+    }
+    
+    /**
      * 操作类型
      * @author wWX191016
      *
@@ -95,7 +111,7 @@ public class GlobleConstants
     public interface OprationType
     {
         
-        int BASIC = 0x20000;
+        int BASIC = 0x30000;
         
         /**
          * 返回

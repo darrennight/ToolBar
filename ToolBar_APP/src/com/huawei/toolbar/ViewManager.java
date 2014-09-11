@@ -3,9 +3,12 @@ package com.huawei.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
+import com.huawei.toolbar.ui.activity.SubMainActivity;
 import com.huawei.toolbar.ui.windows.AboutWindow;
 import com.huawei.toolbar.ui.windows.AfterPlayWindow;
 import com.huawei.toolbar.ui.windows.BaseWindow;
@@ -37,6 +40,8 @@ public class ViewManager extends Handler
      * 此次需要展示的 Window
      */
     private BaseWindow currentWindow = null;
+    
+    private Context mContext;
     
     private List<BaseWindow> windows;
     
@@ -70,6 +75,8 @@ public class ViewManager extends Handler
     
     public ViewManager()
     {
+        mContext = ToolbarApplication.getInstance();
+        
         windows = new ArrayList<BaseWindow>();
         mMiniWindow = new MiniWindow(this);
         mMainWindow = new MainWindow(this);
@@ -153,6 +160,13 @@ public class ViewManager extends Handler
             case GlobleConstants.WindowType.UNLUCKY:
                 windows.clear();
                 windows.add(mUnluckyWindow);
+                break;
+            
+            case GlobleConstants.ActivityType.SUB_MAIN:
+                Intent intent = new Intent(mContext, SubMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+                
                 break;
             
             case GlobleConstants.OprationType.BACK:

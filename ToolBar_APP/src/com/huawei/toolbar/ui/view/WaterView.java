@@ -1,36 +1,80 @@
-package com.huawei.toolbar.uiutil;
-
-import com.huawei.toolbar.util.PresDataUtil;
+package com.huawei.toolbar.ui.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Paint.FontMetrics;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.Region;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
+import com.huawei.toolbar.util.PresDataUtil;
+
+/**
+ * [一句话功能简述]流量展示的水波纹效果<BR>
+ * [功能详细描述]
+ * @author wWX191016
+ * @version [RCS Client V100R001C03, 2014-9-4] 
+ */
 public class WaterView extends View
 {
+    /**
+     * 当前实例
+     */
     private static WaterView instance;
     
     private final String WaterViewData = "WaterView";
     
+    /**
+     * 上层水纹path
+     */
     private Path mAboveWavePath = new Path();
     
+    /**
+     * 下层水纹path
+     */
     private Path mBelowWavePath = new Path();
     
+    /**
+     * 切割画板path
+     */
     private Path mClipPath = new Path();
     
+    /**
+     * 上层水纹paint
+     */
     private Paint mAboveWavePaint = new Paint();
     
+    /**
+     * 下层水纹paint
+     */
     private Paint mBelowWavePaint = new Paint();
     
+    private Paint mNumberPaint = new Paint();
+    
+    /**
+     * 上层水纹透明度
+     */
     private final int above_alpha = 255;
     
+    /**
+     * 下层水纹透明度
+     */
     private final int below_alpha = 120;
     
+    /**
+     * 所绘制的起点与区域顶端的距离
+     */
     private int mWaveToTop;
     
     private int mBackColor = Color.WHITE;
@@ -60,23 +104,41 @@ public class WaterView extends View
     /**
      * 每次刷新偏移
      */
-    private final float mOffset = 0.5f;
+    private final float offset = 0.5f;
     
-    private final float mMaxRight = mZoomX * mOffset;
+    private final float mMaxRight = mZoomX * offset;
     
     /**
      * above波形起点
      */
-    private float mAboveOffset = 0.0f;
+    private float aboveOffset = 0.0f;
     
     /**
      * below波形起点
      */
-    private float mBelowOffset = -1.0f;
+    private float belowOffset = -1.0f;
     
-    private float mAnimOffset = 0.15f;
+    private float animOffset = 0.15f;
     
     private RefreshProgressRunnable mRefreshProgressRunnable;
+    
+    /**
+     * 文字的y轴位置
+     */
+    private float mTextBaseY;
+    
+    /**
+     * 展示的文字
+     */
+    private String mText;
+    
+    private SensorManager mSensorManager;
+    
+    private Sensor mSensor;
+    
+    private float x, y, z;
+    
+    private float degrees;
     
     public WaterView(Context context, AttributeSet attrs)
     {
@@ -84,6 +146,9 @@ public class WaterView extends View
         instance = this;
         setProgress(PresDataUtil.getInt(WaterViewData));
         initializePainters();
+        mSensorManager =
+            (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
     
     /**
@@ -96,15 +161,37 @@ public class WaterView extends View
         return instance;
     }
     
+    /**
+     * [一句话功能简述]注册重力感应监听<BR>
+     * [功能详细描述]
+     */
+    public void registerSersor()
+    {
+        mSensorManager.registerListener(sensorListener,
+            mSensor,
+            SensorManager.SENSOR_DELAY_GAME);
+    }
+    
+    /**
+     * [一句话功能简述]注销重力感应监听<BR>
+     * [功能详细描述]
+     */
+    public void unregisterSersor()
+    {
+        mSensorManager.unregisterListener(sensorListener);
+    }
+    
     @Override
     protected void onDraw(Canvas canvas)
     {
         super.onDraw(canvas);
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
+            | Paint.FILTER_BITMAP_FLAG));
         canvas.clipPath(mClipPath, Region.Op.REPLACE);
         canvas.drawColor(mBackColor);
         canvas.drawPath(mBelowWavePath, mBelowWavePaint);
         canvas.drawPath(mAboveWavePath, mAboveWavePaint);
-        
+        canvas.drawText(mText, getWidth() / 2, mTextBaseY, mNumberPaint);
     }
     
     @Override
@@ -158,6 +245,10 @@ public class WaterView extends View
         mBelowWavePaint.setAlpha(below_alpha);
         mBelowWavePaint.setStyle(Paint.Style.FILL);
         mBelowWavePaint.setAntiAlias(true);
+        
+        mNumberPaint.setColor(Color.BLUE);
+        mNumberPaint.setTextSize(30);
+        mNumberPaint.setTextAlign(Align.CENTER);
     }
     
     /**
@@ -172,18 +263,18 @@ public class WaterView extends View
         getWaveOffset();
         
         mAboveWavePath.moveTo(getLeft(), getHeight());
-        for (float i = 0; mZoomX * i <= getRight() + mMaxRight; i += mOffset)
+        for (float i = 0; mZoomX * i <= getRight() + mMaxRight; i += offset)
         {
             mAboveWavePath.lineTo((mZoomX * i),
-                (float) (mZoomY * Math.cos(i + mAboveOffset)) + mWaveToTop);
+                (float) (mZoomY * Math.cos(i + aboveOffset)) + mWaveToTop);
         }
         mAboveWavePath.lineTo(getRight(), getHeight());
         
         mBelowWavePath.moveTo(getLeft(), getHeight());
-        for (float i = 0; mZoomX * i <= getRight() + mMaxRight; i += mOffset)
+        for (float i = 0; mZoomX * i <= getRight() + mMaxRight; i += offset)
         {
             mBelowWavePath.lineTo((mZoomX * i),
-                (float) (mZoomY * Math.cos(i + mBelowOffset)) + mWaveToTop);
+                (float) (mZoomY * Math.cos(i + belowOffset)) + mWaveToTop);
         }
         mBelowWavePath.lineTo(getRight(), getHeight());
         
@@ -195,24 +286,6 @@ public class WaterView extends View
     {
         mNewProgress = progress > 100 ? 100 : progress;
         PresDataUtil.save(WaterViewData, mNewProgress);
-        
-        if (progress <= 50)
-        {
-            mBelowWavePaint.setColor(color_green);
-            mAboveWavePaint.setColor(color_green);
-        }
-        else if (progress > 50 && progress <= 80)
-        {
-            mBelowWavePaint.setColor(color_yellow);
-            mAboveWavePaint.setColor(color_yellow);
-        }
-        else
-        {
-            mBelowWavePaint.setColor(color_red);
-            mAboveWavePaint.setColor(color_red);
-        }
-        mAboveWavePaint.setAlpha(above_alpha);
-        mBelowWavePaint.setAlpha(below_alpha);
         
         isRefresh = true;
     }
@@ -234,22 +307,22 @@ public class WaterView extends View
     
     private void getWaveOffset()
     {
-        if (mBelowOffset > Float.MAX_VALUE - 100)
+        if (belowOffset > Float.MAX_VALUE - 100)
         {
-            mBelowOffset = 0;
+            belowOffset = 0;
         }
         else
         {
-            mBelowOffset += mAnimOffset;
+            belowOffset += animOffset;
         }
         
-        if (mAboveOffset > Float.MAX_VALUE - 100)
+        if (aboveOffset > Float.MAX_VALUE - 100)
         {
-            mAboveOffset = 0;
+            aboveOffset = 0;
         }
         else
         {
-            mAboveOffset += mAnimOffset;
+            aboveOffset += animOffset;
         }
     }
     
@@ -280,11 +353,36 @@ public class WaterView extends View
                     }
                 }
                 
+                FontMetrics fontMetrics = mNumberPaint.getFontMetrics();
+                float fontHeight = fontMetrics.bottom - fontMetrics.top;
+                mTextBaseY =
+                    getHeight() - (getHeight() - fontHeight) / 2
+                        - fontMetrics.bottom;
+                
                 mWaveToTop = (int) (getHeight() * (1f - i / 100f));
+                mText = (i < 0 ? 0 : i) + "%";
                 calculatePath();
                 invalidate();
                 getHandler().postDelayed(this, 60);
             }
         }
     }
+    
+    SensorEventListener sensorListener = new SensorEventListener()
+    {
+        
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy)
+        {
+            
+        }
+        
+        @Override
+        public void onSensorChanged(SensorEvent event)
+        {
+            x = event.values[SensorManager.DATA_X];
+            y = event.values[SensorManager.DATA_Y];
+            z = event.values[SensorManager.DATA_Z];
+        }
+    };
 }

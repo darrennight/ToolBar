@@ -296,6 +296,12 @@
                     android:textSize="18sp" />
 
                 <Button
+                    android:id="@+id/jump_btn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:background="@color/transparent" />
+
+                <Button
                     android:id="@+id/close_btn"
                     android:layout_width="40dip"
                     android:layout_height="wrap_content"
@@ -435,7 +441,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="13dip" >
 
-                <com.huawei.toolbar.uiutil.WaterView
+                <com.huawei.toolbar.ui.view.WaterView
                     android:id="@+id/water"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />

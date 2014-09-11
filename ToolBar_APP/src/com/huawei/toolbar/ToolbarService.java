@@ -47,7 +47,7 @@ public class ToolbarService extends Service
                 {
                     handler.sendEmptyMessage(GlobleConstants.WindowType.BEFORE_PLAY);
                 }
-                else if (currentActivity.equals("com.huawei.toolbar.ui.MainActivity"))
+                else if (currentActivity.equals("com.huawei.toolbar.ui.activity.MainActivity"))
                 {
                     handler.sendEmptyMessage(GlobleConstants.WindowType.WARN);
                 }
@@ -58,11 +58,6 @@ public class ToolbarService extends Service
             }
         }
     };
-    
-    //com.huawei.toolbar.MainActivity
-    //com.tencent.mobileqq.activity.SplashActivity
-    //com.tencent.mobileqq.activity.ChatActivity
-    //com.tencent.mobileqq.activity.PublicAccountChatActivity
     
     @Override
     public IBinder onBind(Intent intent)
@@ -82,8 +77,6 @@ public class ToolbarService extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        Log.i("Service", "onStartCommand");
-        
         if (mTimer == null)
         {
             mTimer = new Timer();

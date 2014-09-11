@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
-import com.huawei.toolbar.uiutil.WaterView;
+import com.huawei.toolbar.ui.view.WaterView;
 
 public class MainWindow extends BaseWindow
 {
@@ -26,6 +26,8 @@ public class MainWindow extends BaseWindow
     private Button mMessageBtn;
     
     private Button mAboutBtn;
+    
+    private Button mJumpBtn;
     
     private ImageView mUpImage;
     
@@ -59,6 +61,8 @@ public class MainWindow extends BaseWindow
         mFlowLayout = (RelativeLayout) mWindow.findViewById(R.id.layout_view);
         mWaterBtn = (Button) mWindow.findViewById(R.id.water_btn);
         mWaterBtn.setOnClickListener(this);
+        mJumpBtn = (Button) mWindow.findViewById(R.id.jump_btn);
+        mJumpBtn.setOnClickListener(this);
     }
     
     @Override
@@ -69,6 +73,7 @@ public class MainWindow extends BaseWindow
             mManager.addView(mWindow, mParams);
             btn_clickNum = 0;
             isWindowAdded = true;
+            WaterView.getInstance().registerSersor();
         }
     }
     
@@ -79,15 +84,10 @@ public class MainWindow extends BaseWindow
         {
             mManager.removeView(mWindow);
             isWindowAdded = false;
+            WaterView.getInstance().unregisterSersor();
         }
     }
     
-    /* (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    /* (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
     @Override
     public void onClick(View v)
     {
@@ -141,6 +141,10 @@ public class MainWindow extends BaseWindow
         if (mWaterBtn == v)
         {
             WaterView.getInstance().setProgress((int) (Math.random() * 100));
+        }
+        if (mJumpBtn == v)
+        {
+            mHandler.sendEmptyMessage(GlobleConstants.ActivityType.SUB_MAIN);
         }
     }
     
