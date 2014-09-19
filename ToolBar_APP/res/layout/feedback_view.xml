@@ -4,9 +4,9 @@
     android:layout_height="wrap_content" >
 
     <RelativeLayout
-        android:id="@+id/relate"
-        android:layout_width="300dip"
-        android:layout_height="210dip"
+        android:id="@+id/layout_back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:background="@drawable/white_background" >
 
@@ -79,16 +79,25 @@
                 android:hint="@string/hint"
                 android:maxLength="50"
                 android:textColor="@color/black"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/pull_btn"
+            android:layout_width="25dip"
+            android:layout_height="20dip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dip"
+            android:background="@drawable/pull" />
 
         <Button
             android:id="@+id/btn_feedback"
             android:layout_width="100dip"
             android:layout_height="30dip"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@id/pull_btn"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/green_btn_img"
             android:text="@string/feedback"
             android:textColor="#FFFFFF" />

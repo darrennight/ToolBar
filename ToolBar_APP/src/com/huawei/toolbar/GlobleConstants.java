@@ -133,4 +133,18 @@ public class GlobleConstants
          */
         int REFRESH = BASIC + 4;
     }
+    
+    public interface Action
+    {
+        String BASIC = "com.huawei.toolbar.action.";
+        
+        String CONFIG_CHANGE = BASIC + "broadcast.configchange";
+    }
+    
+    public interface ExtraName
+    {
+        String BASIC = "com.huawei.toolbar.extraname.";
+        
+        String SCREEN_ORIENTATION = "screen.orientation";
+    }
 }

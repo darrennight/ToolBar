@@ -12,10 +12,8 @@ import android.graphics.Region;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.huawei.toolbar.util.PresDataUtil;
@@ -28,11 +26,6 @@ import com.huawei.toolbar.util.PresDataUtil;
  */
 public class WaterView extends View
 {
-    /**
-     * 当前实例
-     */
-    private static WaterView instance;
-    
     private final String WaterViewData = "WaterView";
     
     /**
@@ -82,12 +75,6 @@ public class WaterView extends View
     private int mOldProgress = 0;
     
     private int mNewProgress = 0;
-    
-    private final int color_green = 0x99CC66;
-    
-    private final int color_yellow = 0xFFFF66;
-    
-    private final int color_red = 0xFF6666;
     
     private Boolean isRefresh = false;
     
@@ -143,22 +130,11 @@ public class WaterView extends View
     public WaterView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        instance = this;
         setProgress(PresDataUtil.getInt(WaterViewData));
         initializePainters();
         mSensorManager =
             (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    }
-    
-    /**
-     * 获取waterview实例
-     * 
-     * @return instance
-     */
-    public static WaterView getInstance()
-    {
-        return instance;
     }
     
     /**
@@ -187,10 +163,15 @@ public class WaterView extends View
         super.onDraw(canvas);
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
             | Paint.FILTER_BITMAP_FLAG));
+        // 将图形切割为圆形
         canvas.clipPath(mClipPath, Region.Op.REPLACE);
+        // 背景色
         canvas.drawColor(mBackColor);
+        // 下层波浪
         canvas.drawPath(mBelowWavePath, mBelowWavePaint);
+        // 下层波浪
         canvas.drawPath(mAboveWavePath, mAboveWavePaint);
+        // 百分比
         canvas.drawText(mText, getWidth() / 2, mTextBaseY, mNumberPaint);
     }
     
@@ -383,6 +364,7 @@ public class WaterView extends View
             x = event.values[SensorManager.DATA_X];
             y = event.values[SensorManager.DATA_Y];
             z = event.values[SensorManager.DATA_Z];
+            
         }
     };
 }

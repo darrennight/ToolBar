@@ -22,7 +22,8 @@
         android:label="@string/app_name" >
         <activity
             android:name="com.huawei.toolbar.ui.activity.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +35,9 @@
             android:label="@string/app_name" >
         </activity>
 
-        <service android:name="ToolbarService" >
+        <service
+            android:name="ToolbarService"
+            android:configChanges="orientation" >
         </service>
     </application>
 

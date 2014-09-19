@@ -1,8 +1,8 @@
 package com.huawei.toolbar.ui.windows;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.MyData;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.ui.params.WindowParamsSmall;
 import com.huawei.toolbar.ui.view.WaterView;
 
 public class MainWindow extends BaseWindow
@@ -27,13 +29,13 @@ public class MainWindow extends BaseWindow
     
     private Button mAboutBtn;
     
-    private Button mJumpBtn;
-    
     private ImageView mUpImage;
     
     private ImageView mDownImage;
     
     private Button mWaterBtn;
+    
+    private WaterView mWaterView;
     
     private RelativeLayout mFlowLayout;
     
@@ -61,8 +63,9 @@ public class MainWindow extends BaseWindow
         mFlowLayout = (RelativeLayout) mWindow.findViewById(R.id.layout_view);
         mWaterBtn = (Button) mWindow.findViewById(R.id.water_btn);
         mWaterBtn.setOnClickListener(this);
-        mJumpBtn = (Button) mWindow.findViewById(R.id.jump_btn);
-        mJumpBtn.setOnClickListener(this);
+        
+        MyData data = MyData.getInstance();
+        
     }
     
     @Override
@@ -73,7 +76,10 @@ public class MainWindow extends BaseWindow
             mManager.addView(mWindow, mParams);
             btn_clickNum = 0;
             isWindowAdded = true;
-            WaterView.getInstance().registerSersor();
+            mWaterView = (WaterView) mWindow.findViewById(R.id.water);
+            mWaterView.registerSersor();
+            
+            AnimationDown();
         }
     }
     
@@ -84,7 +90,8 @@ public class MainWindow extends BaseWindow
         {
             mManager.removeView(mWindow);
             isWindowAdded = false;
-            WaterView.getInstance().unregisterSersor();
+            mWaterView.unregisterSersor();
+            mWaterView = null;
         }
     }
     
@@ -93,7 +100,8 @@ public class MainWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
+            //            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE);
         }
         if (mShowBtn == v)
         {
@@ -128,23 +136,19 @@ public class MainWindow extends BaseWindow
         }
         if (mShopBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.SHOP);
+            AnimationUp(GlobleConstants.WindowType.SHOP);
         }
         if (mMessageBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.MESSAGE);
+            AnimationUp(GlobleConstants.WindowType.MESSAGE);
         }
         if (mAboutBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.ABOUT);
+            AnimationUp(GlobleConstants.WindowType.ABOUT);
         }
         if (mWaterBtn == v)
         {
-            WaterView.getInstance().setProgress((int) (Math.random() * 100));
-        }
-        if (mJumpBtn == v)
-        {
-            mHandler.sendEmptyMessage(GlobleConstants.ActivityType.SUB_MAIN);
+            mWaterView.setProgress((int) (Math.random() * 100));
         }
     }
     
@@ -152,5 +156,17 @@ public class MainWindow extends BaseWindow
     protected int setWindow()
     {
         return R.layout.manager;
+    }
+    
+    @Override
+    protected LayoutParams setParams()
+    {
+        return new WindowParamsSmall();
+    }
+    
+    @Override
+    protected int setAnimationId()
+    {
+        return R.id.layout_back;
     }
 }

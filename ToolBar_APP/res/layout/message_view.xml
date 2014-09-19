@@ -4,9 +4,9 @@
     android:layout_height="wrap_content" >
 
     <RelativeLayout
-        android:id="@+id/relate"
-        android:layout_width="300dip"
-        android:layout_height="210dip"
+        android:id="@+id/layout_back"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
         android:background="@drawable/white_background" >
 
@@ -63,7 +63,7 @@
         <RelativeLayout
             android:id="@+id/layout3"
             android:layout_width="fill_parent"
-            android:layout_height="45dip"
+            android:layout_height="wrap_content"
             android:layout_below="@id/layout1" >
 
             <TextView
@@ -71,22 +71,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dip"
-                android:layout_marginTop="2dip"
+                android:layout_marginTop="4dip"
                 android:text="@string/message_content1"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txt_content1_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="2dip"
+                android:layout_below="@id/txt_content1"
                 android:layout_marginLeft="15dip"
                 android:layout_marginRight="15dip"
                 android:text="@string/message_content1_detail"
                 android:textColor="@color/black"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <View
@@ -96,12 +95,13 @@
             android:layout_below="@id/layout3"
             android:layout_marginLeft="4dip"
             android:layout_marginRight="3dip"
+            android:layout_marginTop="4dip"
             android:background="@color/gray" />
 
         <RelativeLayout
             android:id="@+id/layout4"
             android:layout_width="fill_parent"
-            android:layout_height="45dip"
+            android:layout_height="wrap_content"
             android:layout_below="@id/view1" >
 
             <TextView
@@ -109,22 +109,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dip"
-                android:layout_marginTop="2dip"
+                android:layout_marginTop="4dip"
                 android:text="@string/message_content2"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txt_content2_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="2dip"
+                android:layout_below="@id/txt_content2"
                 android:layout_marginLeft="15dip"
                 android:layout_marginRight="15dip"
                 android:text="@string/message_content2_detail"
                 android:textColor="@color/black"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <View
@@ -134,7 +133,17 @@
             android:layout_below="@id/layout4"
             android:layout_marginLeft="4dip"
             android:layout_marginRight="3dip"
+            android:layout_marginTop="4dip"
             android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/pull_btn"
+            android:layout_width="25dip"
+            android:layout_height="20dip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dip"
+            android:background="@drawable/pull" />
     </RelativeLayout>
 
 </RelativeLayout>

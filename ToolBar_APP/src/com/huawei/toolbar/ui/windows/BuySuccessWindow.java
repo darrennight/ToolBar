@@ -1,11 +1,13 @@
 package com.huawei.toolbar.ui.windows;
 
-import com.huawei.toolbar.GlobleConstants;
-import com.huawei.toolbar.R;
-
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+
+import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.R;
+import com.huawei.toolbar.ui.params.WindowParamsFill;
 
 public class BuySuccessWindow extends BaseWindow
 {
@@ -26,7 +28,7 @@ public class BuySuccessWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE);
         }
     }
     
@@ -43,6 +45,8 @@ public class BuySuccessWindow extends BaseWindow
         {
             mManager.addView(mWindow, mParams);
             isWindowAdded = true;
+
+            AnimationDown();
         }
     }
     
@@ -55,5 +59,16 @@ public class BuySuccessWindow extends BaseWindow
             isWindowAdded = false;
         }
     }
+
+    @Override
+    protected LayoutParams setParams()
+    {
+        return new WindowParamsFill();
+    }
     
+    @Override
+    protected int setAnimationId()
+    {
+        return R.id.layout_back;
+    }
 }

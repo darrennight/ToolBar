@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.AudioManager;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -25,36 +26,50 @@ public class ToolbarService extends Service
     
     private String mLastActivity = "";
     
+    private AudioManager mAudioManager;
+    
     private TimerTask mTask = new TimerTask()
     {
         @Override
         public void run()
         {
             String currentActivity = getTopActivity();
-            getTopPackage();
+            String currentPackage = getTopPackage();
             if (!mLastActivity.equals(currentActivity))
             {
                 mLastActivity = currentActivity;
-                if (currentActivity.equals("com.tencent.mobileqq.activity.SplashActivity"))
-                {
-                    handler.sendEmptyMessage(GlobleConstants.WindowType.MINI);
-                }
-                else if (currentActivity.equals("com.tencent.mobileqq.activity.PublicAccountChatActivity"))
-                {
-                    handler.sendEmptyMessage(GlobleConstants.WindowType.AFTER_PLAY);
-                }
-                else if (currentActivity.equals("com.tencent.mobileqq.activity.ChatActivity"))
+                if (currentActivity.equals("com.tudou.ui.activity.DetailActivity")
+                    || currentActivity.equals("com.baidu.video.player.PlayerActivity")
+                    || currentActivity.equals("com.tencent.qqlive.model.videoinfo.VideoDetailActivity")
+                    || currentActivity.equals("org.iqiyi.video.activity.PlayerActivity")
+                    || currentActivity.equals("com.sohu.sohuvideo.ui.VideoDetailActivity")
+                    || currentActivity.equals("com.youku.ui.activity.DetailActivity")
+                    || currentActivity.equals("com.pplive.androidphone.ui.detail.ChannelDetailActivity")
+                    || currentActivity.equals("com.sohu.sohuvideo.ui.ShortVideoDetailActivity"))
                 {
                     handler.sendEmptyMessage(GlobleConstants.WindowType.BEFORE_PLAY);
                 }
+                else if (currentPackage.equals("com.tudou.android")
+                    || currentPackage.equals("com.baidu.video")
+                    || currentPackage.equals("com.tencent.qqlive")
+                    || currentPackage.equals("com.qiyi.video")
+                    || currentPackage.equals("com.sohu.sohuvideo")
+                    || currentPackage.equals("com.youku.phone")
+                    || currentPackage.equals("com.pplive.androidphone"))
+                {
+                    handler.sendEmptyMessage(GlobleConstants.WindowType.MINI);
+                }
                 else if (currentActivity.equals("com.huawei.toolbar.ui.activity.MainActivity"))
                 {
-                    handler.sendEmptyMessage(GlobleConstants.WindowType.WARN);
+                    handler.sendEmptyMessage(GlobleConstants.WindowType.MINI);
                 }
                 else
                 {
                     handler.sendEmptyMessage(GlobleConstants.OprationType.CLOSEALL);
                 }
+            }
+            if (mAudioManager.isMusicActive())
+            {
             }
         }
     };
@@ -71,7 +86,9 @@ public class ToolbarService extends Service
         super.onCreate();
         mActivityManager =
             (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        handler = new ViewManager();
+        handler = ViewManager.getInstance();
+        
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
     }
     
     @Override
@@ -90,6 +107,21 @@ public class ToolbarService extends Service
     public void onConfigurationChanged(Configuration newConfig)
     {
         super.onConfigurationChanged(newConfig);
+        
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            Intent intent=new Intent();  
+            intent.setAction(GlobleConstants.Action.CONFIG_CHANGE);  
+            intent.putExtra(GlobleConstants.ExtraName.SCREEN_ORIENTATION, "portrait");
+            sendBroadcast(intent);
+        }
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            Intent intent=new Intent();  
+            intent.setAction(GlobleConstants.Action.CONFIG_CHANGE);  
+            intent.putExtra(GlobleConstants.ExtraName.SCREEN_ORIENTATION, "landscape");
+            sendBroadcast(intent);
+        }
     }
     
     @Override
@@ -101,6 +133,9 @@ public class ToolbarService extends Service
             mTimer = null;
         }
         handler.sendEmptyMessage(GlobleConstants.OprationType.CLOSEALL);
+        
+        handler = null;
+        mActivityManager = null;
         super.onDestroy();
     }
     

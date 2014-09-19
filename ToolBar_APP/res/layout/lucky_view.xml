@@ -4,9 +4,9 @@
     android:layout_height="wrap_content" >
 
     <RelativeLayout
-        android:id="@+id/white_back"
+        android:id="@+id/layout_back"
         android:layout_width="300dip"
-        android:layout_height="200dip"
+        android:layout_height="210dip"
         android:background="@drawable/white_background" >
 
         <RelativeLayout

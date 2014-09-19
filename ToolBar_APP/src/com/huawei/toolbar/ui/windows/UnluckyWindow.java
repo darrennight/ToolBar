@@ -2,9 +2,12 @@ package com.huawei.toolbar.ui.windows;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.ui.params.WindowParamsFill;
+import com.huawei.toolbar.ui.params.WindowParamsSmall;
 
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 
 public class UnluckyWindow extends BaseWindow
@@ -30,11 +33,11 @@ public class UnluckyWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE);
         }
         if (mShopBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.SHOP);
+            AnimationUp(GlobleConstants.WindowType.SHOP);
         }
     }
     
@@ -51,6 +54,8 @@ public class UnluckyWindow extends BaseWindow
         {
             mManager.addView(mWindow, mParams);
             isWindowAdded = true;
+            
+            AnimationDown();
         }
     }
     
@@ -61,7 +66,20 @@ public class UnluckyWindow extends BaseWindow
         {
             mManager.removeView(mWindow);
             isWindowAdded = false;
+
+            AnimationDown();
         }
     }
+
+    @Override
+    protected LayoutParams setParams()
+    {
+        return new WindowParamsSmall();
+    }
     
+    @Override
+    protected int setAnimationId()
+    {
+        return R.id.layout_back;
+    }
 }

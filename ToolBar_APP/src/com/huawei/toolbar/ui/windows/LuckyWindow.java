@@ -2,9 +2,12 @@ package com.huawei.toolbar.ui.windows;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.ui.params.WindowParamsFill;
+import com.huawei.toolbar.ui.params.WindowParamsSmall;
 
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 
 public class LuckyWindow extends BaseWindow
@@ -26,7 +29,7 @@ public class LuckyWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE);
         }
     }
     
@@ -43,6 +46,8 @@ public class LuckyWindow extends BaseWindow
         {
             mManager.addView(mWindow, mParams);
             isWindowAdded = true;
+
+            AnimationDown();
         }
     }
     
@@ -55,5 +60,16 @@ public class LuckyWindow extends BaseWindow
             isWindowAdded = false;
         }
     }
+
+    @Override
+    protected LayoutParams setParams()
+    {
+        return new WindowParamsSmall();
+    }
     
+    @Override
+    protected int setAnimationId()
+    {
+        return R.id.layout_back;
+    }
 }

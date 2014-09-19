@@ -1,4 +1,4 @@
-package com.huawei.toolbar.ui;
+package com.huawei.toolbar.ui.params;
 
 import com.huawei.toolbar.ToolbarApplication;
 
@@ -13,10 +13,15 @@ import android.view.WindowManager.LayoutParams;
  * @author wWX191016
  *
  */
-public class WindowParams extends WindowManager.LayoutParams
+public class WindowParamsSmall extends WindowManager.LayoutParams
 {
-    public WindowParams()
+    public WindowParamsSmall()
     {
+        Context context = ToolbarApplication.getInstance();
+        WindowManager manager =
+            (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int screenH = manager.getDefaultDisplay().getHeight();
+        
         type = LayoutParams.TYPE_SYSTEM_ALERT;
         format = PixelFormat.RGBA_8888;
         flags =
@@ -25,11 +30,6 @@ public class WindowParams extends WindowManager.LayoutParams
         width = LayoutParams.WRAP_CONTENT;
         height = LayoutParams.WRAP_CONTENT;
         gravity = Gravity.TOP;
-        
-        Context context = ToolbarApplication.getInstance();
-        WindowManager manager =
-            (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        int screenH = manager.getDefaultDisplay().getHeight();
         y = screenH / 4;
     }
 }

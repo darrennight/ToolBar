@@ -2,10 +2,12 @@ package com.huawei.toolbar.ui.windows;
 
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.ui.params.WindowParamsFill;
 
 public class ShopWindow extends BaseWindow
 {
@@ -16,6 +18,8 @@ public class ShopWindow extends BaseWindow
     private Button mCloseBtn;
     
     private Button mBuyBtn1, mBuyBtn2, mBuyBtn3;
+    
+    private Button mPullUpBtn;
     
     public ShopWindow(Handler handler)
     {
@@ -31,6 +35,8 @@ public class ShopWindow extends BaseWindow
         mBuyBtn2.setOnClickListener(this);
         mBuyBtn3 = (Button) mWindow.findViewById(R.id.btn_shop3);
         mBuyBtn3.setOnClickListener(this);
+        mPullUpBtn = (Button) mWindow.findViewById(R.id.pull_btn);
+        mPullUpBtn.setOnClickListener(this);
     }
     
     @Override
@@ -38,23 +44,27 @@ public class ShopWindow extends BaseWindow
     {
         if (mBackBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.BACK);
+            AnimationUp(GlobleConstants.OprationType.BACK);
         }
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE);
         }
         if (mBuyBtn1 == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.BUY);
+            AnimationUp(GlobleConstants.WindowType.BUY);
         }
         if (mBuyBtn2 == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.BUY);
+            AnimationUp(GlobleConstants.WindowType.BUY);
         }
         if (mBuyBtn3 == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.BUY);
+            AnimationUp(GlobleConstants.WindowType.BUY);
+        }
+        if (mPullUpBtn == v)
+        {
+            AnimationUp(GlobleConstants.OprationType.BACK);
         }
     }
     
@@ -71,6 +81,8 @@ public class ShopWindow extends BaseWindow
         {
             mManager.addView(mWindow, mParams);
             isWindowAdded = true;
+
+            AnimationDown();
         }
     }
     
@@ -83,5 +95,16 @@ public class ShopWindow extends BaseWindow
             isWindowAdded = false;
         }
     }
+
+    @Override
+    protected LayoutParams setParams()
+    {
+        return new WindowParamsFill();
+    }
     
+    @Override
+    protected int setAnimationId()
+    {
+        return R.id.layout_back;
+    }
 }

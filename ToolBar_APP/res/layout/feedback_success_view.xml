@@ -4,9 +4,9 @@
     android:layout_height="wrap_content" >
 
     <RelativeLayout
-        android:id="@+id/relate"
-        android:layout_width="300dip"
-        android:layout_height="210dip"
+        android:id="@+id/layout_back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:background="@drawable/white_background" >
 
@@ -88,7 +88,7 @@
             android:layout_height="30dip"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dip"
+            android:layout_marginBottom="20dip"
             android:background="@drawable/orange_btn"
             android:text="@string/buy_close"
             android:textColor="#FFFFFF" />

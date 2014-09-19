@@ -2,9 +2,11 @@ package com.huawei.toolbar.ui.windows;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.ui.params.WindowParamsFill;
 
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 
 public class BuyWindow extends BaseWindow
@@ -17,6 +19,8 @@ public class BuyWindow extends BaseWindow
     
     private Button mBuyBtn;
     
+    private Button mPullUpBtn;
+    
     public BuyWindow(Handler handler)
     {
         super(handler);
@@ -27,6 +31,8 @@ public class BuyWindow extends BaseWindow
         mCloseBtn.setOnClickListener(this);
         mBuyBtn = (Button) mWindow.findViewById(R.id.btn_buy);
         mBuyBtn.setOnClickListener(this);
+        mPullUpBtn = (Button) mWindow.findViewById(R.id.pull_btn);
+        mPullUpBtn.setOnClickListener(this);
     }
     
     @Override
@@ -34,15 +40,19 @@ public class BuyWindow extends BaseWindow
     {
         if (mBackBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.BACK);
+            AnimationUp(GlobleConstants.OprationType.BACK);
         }
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE);
         }
         if (mBuyBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.BUY_SUCCESS);
+            AnimationUp(GlobleConstants.WindowType.BUY_SUCCESS);
+        }
+        if (mPullUpBtn == v)
+        {
+            AnimationUp(GlobleConstants.OprationType.BACK);
         }
     }
     
@@ -59,6 +69,8 @@ public class BuyWindow extends BaseWindow
         {
             mManager.addView(mWindow, mParams);
             isWindowAdded = true;
+            
+            AnimationDown();
         }
     }
     
@@ -72,4 +84,15 @@ public class BuyWindow extends BaseWindow
         }
     }
     
+    @Override
+    protected LayoutParams setParams()
+    {
+        return new WindowParamsFill();
+    }
+    
+    @Override
+    protected int setAnimationId()
+    {
+        return R.id.layout_back;
+    }
 }

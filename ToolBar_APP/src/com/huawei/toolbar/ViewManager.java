@@ -3,12 +3,10 @@ package com.huawei.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
-import com.huawei.toolbar.ui.activity.SubMainActivity;
 import com.huawei.toolbar.ui.windows.AboutWindow;
 import com.huawei.toolbar.ui.windows.AfterPlayWindow;
 import com.huawei.toolbar.ui.windows.BaseWindow;
@@ -31,6 +29,8 @@ import com.huawei.toolbar.ui.windows.WarnWindow;
  */
 public class ViewManager extends Handler
 {
+    private static ViewManager instance;
+    
     /**
      * 消息传入前的 Window
      */
@@ -40,8 +40,6 @@ public class ViewManager extends Handler
      * 此次需要展示的 Window
      */
     private BaseWindow currentWindow = null;
-    
-    private Context mContext;
     
     private List<BaseWindow> windows;
     
@@ -75,7 +73,7 @@ public class ViewManager extends Handler
     
     public ViewManager()
     {
-        mContext = ToolbarApplication.getInstance();
+        instance = this;
         
         windows = new ArrayList<BaseWindow>();
         mMiniWindow = new MiniWindow(this);
@@ -83,8 +81,8 @@ public class ViewManager extends Handler
         mShopWindow = new ShopWindow(this);
         mMessageWindow = new MessageWindow(this);
         mAboutWindow = new AboutWindow(this);
-        mBuyWindow = new BuyWindow(this);
         mBuySuccessWindow = new BuySuccessWindow(this);
+        mBuyWindow = new BuyWindow(this);
         mFeedbackWindow = new FeedbackWindow(this);
         mFeedbackSuccessWindow = new FeedbackSuccessWindow(this);
         mBeforePlayWindow = new BeforePlayWindow(this);
@@ -105,68 +103,74 @@ public class ViewManager extends Handler
                 break;
             
             case GlobleConstants.WindowType.MAIN:
+                
                 windows.clear();
                 windows.add(mMainWindow);
                 break;
             
             case GlobleConstants.WindowType.SHOP:
+                
                 windows.add(mShopWindow);
                 break;
             
             case GlobleConstants.WindowType.MESSAGE:
+                
                 windows.add(mMessageWindow);
                 break;
             
             case GlobleConstants.WindowType.ABOUT:
+                
                 windows.add(mAboutWindow);
                 break;
             
             case GlobleConstants.WindowType.BUY_SUCCESS:
+                
                 windows.add(mBuySuccessWindow);
                 break;
             
             case GlobleConstants.WindowType.BUY:
+                
                 windows.add(mBuyWindow);
                 break;
             
             case GlobleConstants.WindowType.FEEDBACK:
+                
                 windows.add(mFeedbackWindow);
                 break;
             
             case GlobleConstants.WindowType.FEEDBACK_SUCCESS:
+                
                 windows.add(mFeedbackSuccessWindow);
                 break;
             
             case GlobleConstants.WindowType.BEFORE_PLAY:
+                
                 windows.clear();
                 windows.add(mBeforePlayWindow);
                 break;
             
             case GlobleConstants.WindowType.AFTER_PLAY:
+                
                 windows.clear();
                 windows.add(mAfterPlayWindow);
                 break;
             
             case GlobleConstants.WindowType.WARN:
+                
                 windows.clear();
                 windows.add(mWarnWindow);
                 break;
             
             case GlobleConstants.WindowType.LUCKY:
+                
                 windows.clear();
                 windows.add(mLuckyWindow);
                 break;
             
             case GlobleConstants.WindowType.UNLUCKY:
+                
                 windows.clear();
                 windows.add(mUnluckyWindow);
-                break;
-            
-            case GlobleConstants.ActivityType.SUB_MAIN:
-                Intent intent = new Intent(mContext, SubMainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
-                
                 break;
             
             case GlobleConstants.OprationType.BACK:
@@ -204,5 +208,10 @@ public class ViewManager extends Handler
             }
             lastWindow = currentWindow;
         }
+    }
+    
+    public static ViewManager getInstance()
+    {
+        return instance;
     }
 }

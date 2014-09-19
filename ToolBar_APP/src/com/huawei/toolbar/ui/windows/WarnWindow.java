@@ -2,10 +2,13 @@ package com.huawei.toolbar.ui.windows;
 
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.ui.params.WindowParamsSmall;
+import com.huawei.toolbar.ui.view.WaterView;
 
 public class WarnWindow extends BaseWindow
 {
@@ -17,6 +20,10 @@ public class WarnWindow extends BaseWindow
     
     private Button mDraw;
     
+    private Button mWaterBtn;
+    
+    private WaterView mWaterView;
+    
     public WarnWindow(Handler handler)
     {
         super(handler);
@@ -27,6 +34,9 @@ public class WarnWindow extends BaseWindow
         mShopBtn.setOnClickListener(this);
         mDraw = (Button) mWindow.findViewById(R.id.lucky_btn);
         mDraw.setOnClickListener(this);
+        mWaterBtn = (Button) mWindow.findViewById(R.id.water_btn);
+        mWaterBtn.setOnClickListener(this);
+        mWaterView = (WaterView) mWindow.findViewById(R.id.water);
     }
     
     @Override
@@ -34,23 +44,27 @@ public class WarnWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE);
         }
         if (mShopBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.SHOP);
+            AnimationUp(GlobleConstants.WindowType.SHOP);
         }
         if (mDraw == v)
         {
             int i = (int) (Math.random() * 2);
             if (i == 0)
             {
-                mHandler.sendEmptyMessage(GlobleConstants.WindowType.LUCKY);
+                AnimationUp(GlobleConstants.WindowType.LUCKY);
             }
             else
             {
-                mHandler.sendEmptyMessage(GlobleConstants.WindowType.UNLUCKY);
+                AnimationUp(GlobleConstants.WindowType.UNLUCKY);
             }
+        }
+        if (mWaterBtn == v)
+        {
+            mWaterView.setProgress((int) (Math.random() * 100));
         }
     }
     
@@ -67,6 +81,8 @@ public class WarnWindow extends BaseWindow
         {
             mManager.addView(mWindow, mParams);
             isWindowAdded = true;
+            
+            AnimationDown();
         }
     }
     
@@ -77,7 +93,20 @@ public class WarnWindow extends BaseWindow
         {
             mManager.removeView(mWindow);
             isWindowAdded = false;
+
+            AnimationDown();
         }
     }
+
+    @Override
+    protected LayoutParams setParams()
+    {
+        return new WindowParamsSmall();
+    }
     
+    @Override
+    protected int setAnimationId()
+    {
+        return R.id.layout_back;
+    }
 }

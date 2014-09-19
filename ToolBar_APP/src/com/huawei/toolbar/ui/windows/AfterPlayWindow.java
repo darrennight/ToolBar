@@ -2,10 +2,13 @@ package com.huawei.toolbar.ui.windows;
 
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.ui.params.WindowParamsSmall;
+import com.huawei.toolbar.ui.view.WaterView;
 
 public class AfterPlayWindow extends BaseWindow
 {
@@ -15,6 +18,10 @@ public class AfterPlayWindow extends BaseWindow
     
     private Button mShopBtn;
     
+    private Button mWaterBtn;
+    
+    private WaterView mWaterView;
+    
     public AfterPlayWindow(Handler handler)
     {
         super(handler);
@@ -23,6 +30,9 @@ public class AfterPlayWindow extends BaseWindow
         mCloseBtn.setOnClickListener(this);
         mShopBtn = (Button) mWindow.findViewById(R.id.shop_btn);
         mShopBtn.setOnClickListener(this);
+        mWaterBtn = (Button) mWindow.findViewById(R.id.water_btn);
+        mWaterBtn.setOnClickListener(this);
+        mWaterView = (WaterView) mWindow.findViewById(R.id.water);
     }
     
     @Override
@@ -30,11 +40,15 @@ public class AfterPlayWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE);
         }
         if (mShopBtn == v)
         {
-            mHandler.sendEmptyMessage(GlobleConstants.WindowType.SHOP);
+            AnimationUp(GlobleConstants.WindowType.SHOP);
+        }
+        if (mWaterBtn == v)
+        {
+            mWaterView.setProgress((int) (Math.random() * 100));
         }
     }
     
@@ -51,6 +65,8 @@ public class AfterPlayWindow extends BaseWindow
         {
             mManager.addView(mWindow, mParams);
             isWindowAdded = true;
+            
+            AnimationDown();
         }
     }
     
@@ -62,6 +78,18 @@ public class AfterPlayWindow extends BaseWindow
             mManager.removeView(mWindow);
             isWindowAdded = false;
         }
+    }
+
+    @Override
+    protected LayoutParams setParams()
+    {
+        return new WindowParamsSmall();
+    }
+    
+    @Override
+    protected int setAnimationId()
+    {
+        return R.id.layout_back;
     }
     
 }

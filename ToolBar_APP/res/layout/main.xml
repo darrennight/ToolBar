@@ -16,4 +16,31 @@
         android:layout_height="wrap_content"
         android:text="@string/hind_toolbar" />
 
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:background="@color/white" />
+
+    <Button
+        android:id="@+id/before_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/before_btn"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/after_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/after_btn"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/warn_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/warn_btn"
+        android:visibility="gone" />
+
 </LinearLayout>

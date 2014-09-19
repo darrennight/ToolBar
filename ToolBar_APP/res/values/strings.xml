@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MainActivity</string>
-    <string name="show_toolbar">Show the ToolBar</string>
-    <string name="hind_toolbar">Hide the ToolBar</string>
+    <string name="app_name">Toolbar</string>
+    <string name="show_toolbar">开启ToolBar</string>
+    <string name="hind_toolbar">关闭ToolBar</string>
+    <string name="before_btn">视频播放前页面</string>
+    <string name="after_btn">视频播放后页面</string>
+    <string name="warn_btn">流量告警页面</string>
     <string name="manager">流量管家</string>
     <string name="mb">MB</string>
     <string name="remain">剩余流量</string>
@@ -34,7 +37,7 @@
     <string name="about">关于</string>
     <string name="submit">反馈</string>
     <string name="contentDescription"></string>
-    <string name="about_content">流量管家是一款专门为软件定制的,流量管理插件，能再您观看视频的同时,随时查看流量的使用情况，并且随时简便地订购流量套餐,随时查看流量的使用情况.</string>
+    <string name="about_content">  流量管家是一款专门为软件定制的,流量管理插件，能再您观看视频的同时,随时查看流量的使用情况，并且随时简便地订购流量套餐,随时查看流量的使用情况.</string>
     <string name="about_place">中国移动版权所有</string>
     <string name="buy_title">套餐订购</string>
     <string name="buy_price">价格：50元</string>
