@@ -20,7 +20,7 @@ public class ToolbarService extends Service
      */
     private Timer mTimer;
     
-    private ViewManager handler;
+    private MyWindowManager mViewManager;
     
     private ActivityManager mActivityManager;
     
@@ -47,7 +47,7 @@ public class ToolbarService extends Service
                     || currentActivity.equals("com.pplive.androidphone.ui.detail.ChannelDetailActivity")
                     || currentActivity.equals("com.sohu.sohuvideo.ui.ShortVideoDetailActivity"))
                 {
-                    handler.sendEmptyMessage(GlobleConstants.WindowType.BEFORE_PLAY);
+                    mViewManager.sendEmptyMessage(GlobleConstants.WindowType.BEFORE_PLAY);
                 }
                 else if (currentPackage.equals("com.tudou.android")
                     || currentPackage.equals("com.baidu.video")
@@ -57,15 +57,15 @@ public class ToolbarService extends Service
                     || currentPackage.equals("com.youku.phone")
                     || currentPackage.equals("com.pplive.androidphone"))
                 {
-                    handler.sendEmptyMessage(GlobleConstants.WindowType.MINI);
+                    mViewManager.sendEmptyMessage(GlobleConstants.WindowType.MINI);
                 }
                 else if (currentActivity.equals("com.huawei.toolbar.ui.activity.MainActivity"))
                 {
-                    handler.sendEmptyMessage(GlobleConstants.WindowType.MINI);
+                    mViewManager.sendEmptyMessage(GlobleConstants.WindowType.MINI);
                 }
                 else
                 {
-                    handler.sendEmptyMessage(GlobleConstants.OprationType.CLOSEALL);
+                    mViewManager.sendEmptyMessage(GlobleConstants.OprationType.CLOSEALL);
                 }
             }
             if (mAudioManager.isMusicActive())
@@ -86,7 +86,7 @@ public class ToolbarService extends Service
         super.onCreate();
         mActivityManager =
             (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        handler = ViewManager.getInstance();
+        mViewManager = MyWindowManager.getInstance();
         
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
     }
@@ -99,7 +99,7 @@ public class ToolbarService extends Service
             mTimer = new Timer();
             mTimer.scheduleAtFixedRate(mTask, 0, 500);
         }
-        
+        Log.i("ToobarService", "onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
     
@@ -108,19 +108,10 @@ public class ToolbarService extends Service
     {
         super.onConfigurationChanged(newConfig);
         
-        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT
+            || newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
-            Intent intent=new Intent();  
-            intent.setAction(GlobleConstants.Action.CONFIG_CHANGE);  
-            intent.putExtra(GlobleConstants.ExtraName.SCREEN_ORIENTATION, "portrait");
-            sendBroadcast(intent);
-        }
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
-        {
-            Intent intent=new Intent();  
-            intent.setAction(GlobleConstants.Action.CONFIG_CHANGE);  
-            intent.putExtra(GlobleConstants.ExtraName.SCREEN_ORIENTATION, "landscape");
-            sendBroadcast(intent);
+            mViewManager.updateView();
         }
     }
     
@@ -132,9 +123,9 @@ public class ToolbarService extends Service
             mTimer.cancel();
             mTimer = null;
         }
-        handler.sendEmptyMessage(GlobleConstants.OprationType.CLOSEALL);
+        mViewManager.sendEmptyMessage(GlobleConstants.OprationType.CLOSEALL);
         
-        handler = null;
+        mViewManager = null;
         mActivityManager = null;
         super.onDestroy();
     }
@@ -156,8 +147,8 @@ public class ToolbarService extends Service
     {
         if (getComponentName().getClassName() != null)
         {
-            Log.i("ToolbarService", "TopActivity = "
-                + getComponentName().getClassName());
+            //            Log.i("ToolbarService", "TopActivity = "
+            //                + getComponentName().getClassName());
             return getComponentName().getClassName();
         }
         return null;
@@ -171,8 +162,8 @@ public class ToolbarService extends Service
     {
         if (getComponentName().getPackageName() != null)
         {
-            Log.i("ToolbarService", "TopAPP = "
-                + getComponentName().getPackageName());
+            //            Log.i("ToolbarService", "TopAPP = "
+            //                + getComponentName().getPackageName());
             return getComponentName().getPackageName();
         }
         return null;

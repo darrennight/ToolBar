@@ -2,7 +2,6 @@ package com.huawei.toolbar.ui.windows;
 
 import android.os.Handler;
 import android.view.View;
-import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -10,15 +9,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.huawei.toolbar.GlobleConstants;
-import com.huawei.toolbar.MyData;
 import com.huawei.toolbar.R;
-import com.huawei.toolbar.ui.params.WindowParamsSmall;
 import com.huawei.toolbar.ui.view.WaterView;
 
 public class MainWindow extends BaseWindow
 {
-    private static Boolean isWindowAdded = false;
-    
     private Button mCloseBtn;
     
     private Button mShowBtn;
@@ -63,36 +58,15 @@ public class MainWindow extends BaseWindow
         mFlowLayout = (RelativeLayout) mWindow.findViewById(R.id.layout_view);
         mWaterBtn = (Button) mWindow.findViewById(R.id.water_btn);
         mWaterBtn.setOnClickListener(this);
-        
-        MyData data = MyData.getInstance();
-        
+        mWaterView = (WaterView) mWindow.findViewById(R.id.water);
     }
     
     @Override
     public void create()
     {
-        if (!isWindowAdded)
-        {
-            mManager.addView(mWindow, mParams);
-            btn_clickNum = 0;
-            isWindowAdded = true;
-            mWaterView = (WaterView) mWindow.findViewById(R.id.water);
-            mWaterView.registerSersor();
-            
-            AnimationDown();
-        }
-    }
-    
-    @Override
-    public void remove()
-    {
-        if (isWindowAdded)
-        {
-            mManager.removeView(mWindow);
-            isWindowAdded = false;
-            mWaterView.unregisterSersor();
-            mWaterView = null;
-        }
+        super.create();
+        btn_clickNum = 0;
+        AnimationDown();
     }
     
     @Override
@@ -100,7 +74,6 @@ public class MainWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            //            mHandler.sendEmptyMessage(GlobleConstants.OprationType.CLOSE);
             AnimationUp(GlobleConstants.OprationType.CLOSE);
         }
         if (mShowBtn == v)
@@ -153,19 +126,19 @@ public class MainWindow extends BaseWindow
     }
     
     @Override
-    protected int setWindow()
+    protected int windowLayout()
     {
         return R.layout.manager;
     }
     
     @Override
-    protected LayoutParams setParams()
+    protected int paramsType()
     {
-        return new WindowParamsSmall();
+        return WINDOW_SMALL;
     }
     
     @Override
-    protected int setAnimationId()
+    protected int animationLayoutId()
     {
         return R.id.layout_back;
     }

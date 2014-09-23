@@ -27,8 +27,6 @@ public class WindowParamsSmall extends WindowManager.LayoutParams
         flags =
             WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        width = LayoutParams.WRAP_CONTENT;
-        height = LayoutParams.WRAP_CONTENT;
         gravity = Gravity.TOP;
         y = screenH / 4;
     }

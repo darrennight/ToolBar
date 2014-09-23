@@ -1,18 +1,14 @@
 package com.huawei.toolbar.ui.windows;
 
-import com.huawei.toolbar.GlobleConstants;
-import com.huawei.toolbar.R;
-import com.huawei.toolbar.ui.params.WindowParamsFill;
-
 import android.os.Handler;
 import android.view.View;
-import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+
+import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.R;
 
 public class AboutWindow extends BaseWindow
 {
-    private static Boolean isWindowAdded = false;
-    
     private Button mBackBtn;
     
     private Button mCloseBtn;
@@ -57,7 +53,7 @@ public class AboutWindow extends BaseWindow
     }
     
     @Override
-    protected int setWindow()
+    protected int windowLayout()
     {
         return R.layout.about_view;
     }
@@ -65,33 +61,18 @@ public class AboutWindow extends BaseWindow
     @Override
     public void create()
     {
-        if (!isWindowAdded)
-        {
-            mManager.addView(mWindow, mParams);
-            isWindowAdded = true;
-            
-            AnimationDown();
-        }
+        super.create();
+        AnimationDown();
     }
     
     @Override
-    public void remove()
+    protected int paramsType()
     {
-        if (isWindowAdded)
-        {
-            mManager.removeView(mWindow);
-            isWindowAdded = false;
-        }
+        return WINDOW_FILL;
     }
     
     @Override
-    protected LayoutParams setParams()
-    {
-        return new WindowParamsFill();
-    }
-    
-    @Override
-    protected int setAnimationId()
+    protected int animationLayoutId()
     {
         return R.id.layout_back;
     }

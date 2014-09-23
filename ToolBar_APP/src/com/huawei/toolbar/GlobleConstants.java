@@ -1,5 +1,6 @@
 package com.huawei.toolbar;
 
+
 /**
  * 全局常量
  * @author wWX191016
@@ -138,6 +139,9 @@ public class GlobleConstants
     {
         String BASIC = "com.huawei.toolbar.action.";
         
+        /**
+         * 横竖屏切换刷新
+         */
         String CONFIG_CHANGE = BASIC + "broadcast.configchange";
     }
     

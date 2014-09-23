@@ -1,38 +1,18 @@
 package com.huawei.toolbar.ui.windows;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import android.content.Context;
-import android.media.AudioManager;
 import android.os.Handler;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
-import com.huawei.toolbar.ui.params.WindowParamsSmall;
 
 public class MiniWindow extends BaseWindow implements OnTouchListener
 {
-    private static Boolean isMiniWindowAdded = false;
-    
-    public static Boolean getIsMiniWindowAdded()
-    {
-        return isMiniWindowAdded;
-    }
-    
-    private Handler handler = new Handler();
-    
-    private Timer mTimer;
-    
     private Button mMiniBtn;
     
     private int mStartX, mStartY;
@@ -41,85 +21,26 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
     
     private int moveX, moveY;
     
-    private AudioManager mAudioManager;
-    
-    private TimerTask mTask = new TimerTask()
-    {
-        @Override
-        public void run()
-        {
-            handler.post(new Runnable()
-            {
-                public void run()
-                {
-                    Log.i("11", "111");
-                    if (mAudioManager.isMusicActive())
-                    {
-                        if (mMiniBtn.getVisibility() == View.VISIBLE)
-                        {
-                            mMiniBtn.setVisibility(View.GONE);
-                        }
-                    }
-                    else
-                    {
-                        if (mMiniBtn.getVisibility() != View.VISIBLE)
-                        {
-                            mMiniBtn.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
-            });
-            
-        }
-    };
-    
     public MiniWindow(Handler handler)
     {
         super(handler);
         
-        mParams.gravity = Gravity.LEFT | Gravity.TOP;
-        mParams.x = screenW;
-        mParams.y = screenH / 3;
-        
         mMiniBtn = (Button) mWindow.findViewById(R.id.mini_btn);
         mMiniBtn.setOnTouchListener(this);
         mMiniBtn.setOnClickListener(this);
-        
-        mAudioManager =
-            (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-        
-//        if (mTimer == null)
-//        {
-//            mTimer = new Timer();
-//            mTimer.schedule(mTask, 500);
-//        }
     }
     
     @Override
     public void create()
     {
-        if (!isMiniWindowAdded)
+        super.create();
+        if (mParams.x > screenW / 2)
         {
-            mManager.addView(mWindow, mParams);
-            if (mParams.x > screenW / 2)
-            {
-                AnimationRight();
-            }
-            else
-            {
-                AnimationLeft();
-            }
-            isMiniWindowAdded = true;
+            AnimationRight();
         }
-    }
-    
-    @Override
-    public void remove()
-    {
-        if (isMiniWindowAdded)
+        else
         {
-            mManager.removeView(mWindow);
-            isMiniWindowAdded = false;
+            AnimationLeft();
         }
     }
     
@@ -183,7 +104,7 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
     }
     
     @Override
-    protected int setWindow()
+    protected int windowLayout()
     {
         return R.layout.mini_view;
     }
@@ -213,13 +134,13 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
     }
     
     @Override
-    protected LayoutParams setParams()
+    protected int paramsType()
     {
-        return new WindowParamsSmall();
+        return WINDOW_MINI;
     }
     
     @Override
-    protected int setAnimationId()
+    protected int animationLayoutId()
     {
         return 0;
     }

@@ -1,6 +1,5 @@
-package com.huawei.toolbar.ui.windows;
+package com.huawei.toolbar;
 
-import com.huawei.toolbar.MyData;
 
 public class RandomCountUtil
 {

@@ -11,8 +11,6 @@ import android.widget.Button;
 
 public class BuyWindow extends BaseWindow
 {
-    private static Boolean isWindowAdded = false;
-    
     private Button mBackBtn;
     
     private Button mCloseBtn;
@@ -57,7 +55,7 @@ public class BuyWindow extends BaseWindow
     }
     
     @Override
-    protected int setWindow()
+    protected int windowLayout()
     {
         return R.layout.buy_view;
     }
@@ -65,33 +63,18 @@ public class BuyWindow extends BaseWindow
     @Override
     public void create()
     {
-        if (!isWindowAdded)
-        {
-            mManager.addView(mWindow, mParams);
-            isWindowAdded = true;
-            
-            AnimationDown();
-        }
+        super.create();
+        AnimationDown();
     }
     
     @Override
-    public void remove()
+    protected int paramsType()
     {
-        if (isWindowAdded)
-        {
-            mManager.removeView(mWindow);
-            isWindowAdded = false;
-        }
+        return WINDOW_FILL;
     }
     
     @Override
-    protected LayoutParams setParams()
-    {
-        return new WindowParamsFill();
-    }
-    
-    @Override
-    protected int setAnimationId()
+    protected int animationLayoutId()
     {
         return R.id.layout_back;
     }

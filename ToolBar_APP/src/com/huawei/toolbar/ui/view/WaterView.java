@@ -9,12 +9,12 @@ import android.graphics.Paint.FontMetrics;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.Region;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.util.AttributeSet;
+import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 
 import com.huawei.toolbar.util.PresDataUtil;
 
@@ -119,54 +119,70 @@ public class WaterView extends View
      */
     private String mText;
     
-    private SensorManager mSensorManager;
+    /**
+     * 是否使用动画
+     */
+    private boolean mEnableAnimation;
     
-    private Sensor mSensor;
+    private Context mContext;
     
-    private float x, y, z;
+    private int mCurrentDegree = 0; // [0, 359]
     
-    private float degrees;
+    private int mStartDegree = 0;
+    
+    private int mTargetDegree = 0;
+    
+    private long mAnimationStartTime = 0;
+    
+    private boolean mClockwise = false;
+    
+    private long mAnimationEndTime = 0;
+    
+    private static final int ANIMATION_SPEED = 270; // 270 deg/sec
     
     public WaterView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        mContext = context;
+        
         setProgress(PresDataUtil.getInt(WaterViewData));
         initializePainters();
-        mSensorManager =
-            (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-    }
-    
-    /**
-     * [一句话功能简述]注册重力感应监听<BR>
-     * [功能详细描述]
-     */
-    public void registerSersor()
-    {
-        mSensorManager.registerListener(sensorListener,
-            mSensor,
-            SensorManager.SENSOR_DELAY_GAME);
-    }
-    
-    /**
-     * [一句话功能简述]注销重力感应监听<BR>
-     * [功能详细描述]
-     */
-    public void unregisterSersor()
-    {
-        mSensorManager.unregisterListener(sensorListener);
+        MyOrientationEventListener mOraientation =
+            new MyOrientationEventListener(context);
+        mOraientation.enable();
     }
     
     @Override
     protected void onDraw(Canvas canvas)
     {
         super.onDraw(canvas);
+        
+        if (mCurrentDegree != mTargetDegree)
+        {
+            long time = AnimationUtils.currentAnimationTimeMillis();
+            if (time < mAnimationEndTime)
+            {
+                int deltaTime = (int) (time - mAnimationStartTime);
+                int degree =
+                    mStartDegree + ANIMATION_SPEED
+                        * (mClockwise ? deltaTime : -deltaTime) / 1000;
+                degree = degree >= 0 ? degree % 360 : degree % 360 + 360;
+                mCurrentDegree = degree;
+            }
+            else
+            {
+                mCurrentDegree = mTargetDegree;
+            }
+        }
+        
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
             | Paint.FILTER_BITMAP_FLAG));
         // 将图形切割为圆形
         canvas.clipPath(mClipPath, Region.Op.REPLACE);
         // 背景色
         canvas.drawColor(mBackColor);
+        // 设置旋转角度，注：ratate方法的中心位置是在画布（当前的view）的左上角
+        canvas.rotate(-mCurrentDegree, getWidth() / 2, getHeight() / 2);
         // 下层波浪
         canvas.drawPath(mBelowWavePath, mBelowWavePaint);
         // 下层波浪
@@ -233,7 +249,7 @@ public class WaterView extends View
     }
     
     /**
-     * calculate wave track
+     * 绘制波形
      */
     private void calculatePath()
     {
@@ -349,22 +365,79 @@ public class WaterView extends View
         }
     }
     
-    SensorEventListener sensorListener = new SensorEventListener()
+    private void setOrientation(int degree, boolean animation)
+    {
+        mEnableAnimation = animation;
+        degree = degree >= 0 ? degree % 360 : degree % 360 + 360;
+        if (degree == mTargetDegree)
+            return;
+        
+        mTargetDegree = degree;
+        if (mEnableAnimation)
+        {
+            mStartDegree = mCurrentDegree;
+            mAnimationStartTime = AnimationUtils.currentAnimationTimeMillis();
+            
+            int diff = mTargetDegree - mCurrentDegree;
+            diff = diff >= 0 ? diff : 360 + diff;
+            
+            diff = diff > 180 ? diff - 360 : diff;
+            
+            mClockwise = diff >= 0;
+            mAnimationEndTime =
+                mAnimationStartTime + Math.abs(diff) * 1000 / ANIMATION_SPEED;
+        }
+        else
+        {
+            mCurrentDegree = mTargetDegree;
+        }
+        
+        invalidate();
+    }
+    
+    /**
+     * [一句话功能简述]屏幕旋转监听器<BR>
+     * [功能详细描述]可监听4个方向以及int型角度
+     * @author wWX191016
+     * @version [RCS Client V100R001C03, 2014-9-22] 
+     */
+    private class MyOrientationEventListener extends OrientationEventListener
     {
         
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy)
+        public MyOrientationEventListener(Context context)
         {
-            
+            super(context);
         }
         
         @Override
-        public void onSensorChanged(SensorEvent event)
+        public void onOrientationChanged(int orientation)
         {
-            x = event.values[SensorManager.DATA_X];
-            y = event.values[SensorManager.DATA_Y];
-            z = event.values[SensorManager.DATA_Z];
+            // 通过获取当前屏幕方向，动态调整实际水面角度
+            int i = 0;
             
+            WindowManager manager =
+                (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+            int rotation = manager.getDefaultDisplay().getRotation();
+            
+            switch (rotation)
+            {
+                case Surface.ROTATION_0:
+                    i = orientation;
+                    break;
+                
+                case Surface.ROTATION_90:
+                    i = orientation + 90;
+                    break;
+                
+                case Surface.ROTATION_180:
+                    i = orientation + 180;
+                    break;
+                
+                case Surface.ROTATION_270:
+                    i = orientation + 270;
+                    break;
+            }
+            setOrientation(i, true);
         }
-    };
+    }
 }

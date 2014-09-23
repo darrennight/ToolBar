@@ -2,9 +2,12 @@ package com.huawei.toolbar.ui.windows;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -12,6 +15,7 @@ import android.view.animation.AnimationUtils;
 
 import com.huawei.toolbar.R;
 import com.huawei.toolbar.ToolbarApplication;
+import com.huawei.toolbar.ui.params.ToolbarParams;
 
 public abstract class BaseWindow implements OnClickListener
 {
@@ -21,7 +25,7 @@ public abstract class BaseWindow implements OnClickListener
     
     protected Handler mHandler;
     
-    protected WindowManager.LayoutParams mParams;
+    protected ToolbarParams mParams;
     
     protected int screenH;
     
@@ -30,6 +34,23 @@ public abstract class BaseWindow implements OnClickListener
     protected View mWindow;
     
     private View mAnimationLayout;
+    
+    private static Boolean isMiniWindowAdded = false;
+    
+    /**
+     * 可拖动的mini悬浮窗属性
+     */
+    protected static final int WINDOW_MINI = 0;
+    
+    /**
+     * 小悬浮窗属性
+     */
+    protected static final int WINDOW_SMALL = 1;
+    
+    /**
+     * 全屏悬浮窗属性
+     */
+    protected static final int WINDOW_FILL = 2;
     
     public BaseWindow(Handler handler)
     {
@@ -41,11 +62,11 @@ public abstract class BaseWindow implements OnClickListener
         
         getScreenSize();
         
-        mWindow = LayoutInflater.from(mContext).inflate(setWindow(), null);
+        mWindow = LayoutInflater.from(mContext).inflate(windowLayout(), null);
         
-        mParams = setParams();
+        mParams = new ToolbarParams();
         
-        mAnimationLayout = mWindow.findViewById(setAnimationId());
+        mAnimationLayout = mWindow.findViewById(animationLayoutId());
     }
     
     /**
@@ -53,29 +74,66 @@ public abstract class BaseWindow implements OnClickListener
      * [功能详细描述]
      * @return resource id
      */
-    protected abstract int setWindow();
+    protected abstract int windowLayout();
     
     /**
      * [一句话功能简述]需要加载的params类型<BR>
      * [功能详细描述]
-     * @return 类实例
+     * @return 类型
      */
-    protected abstract WindowManager.LayoutParams setParams();
+    protected abstract int paramsType();
     
     /**
-     * [一句话功能简述]需要加载的动画<BR>
+     * [一句话功能简述]需要加载动画的布局<BR>
      * [功能详细描述]
      * @return 动画资源id
      */
-    protected abstract int setAnimationId();
+    protected abstract int animationLayoutId();
     
-    public abstract void create();
+    /**
+     * [一句话功能简述]创建悬浮窗<BR>
+     * [功能详细描述]
+     */
+    public void create()
+    {
+        if (isMiniWindowAdded)
+        {
+            return;
+        }
+        getScreenSize();
+        setParams(paramsType());
+        mManager.addView(mWindow, mParams);
+        isMiniWindowAdded = true;
+    }
     
-    public abstract void remove();
+    /**
+     * [一句话功能简述]关闭悬浮窗<BR>
+     * [功能详细描述]
+     */
+    public void remove()
+    {
+        if (!isMiniWindowAdded)
+        {
+            return;
+        }
+        mManager.removeView(mWindow);
+        isMiniWindowAdded = false;
+    }
     
+    /**
+     * [一句话功能简述]更新悬浮窗<BR>
+     * [功能详细描述]
+     */
     public void update()
     {
-        
+        if (!isMiniWindowAdded)
+        {
+            return;
+        }
+        getScreenSize();
+        setParams(paramsType());
+        mManager.updateViewLayout(mWindow, mParams);
+        Log.i("Window", "screenH=" + screenH + ",screenW=" + screenW);
     }
     
     /**
@@ -84,7 +142,7 @@ public abstract class BaseWindow implements OnClickListener
      */
     protected void AnimationDown()
     {
-        if (setAnimationId() != 0)
+        if (animationLayoutId() != 0)
         {
             Animation animation =
                 AnimationUtils.loadAnimation(mContext, R.anim.window_down);
@@ -95,13 +153,13 @@ public abstract class BaseWindow implements OnClickListener
     }
     
     /**
-     * [一句话功能简述]window的关闭动画<BR>
+     * [一句话功能简述]window的关闭动画，动画结束会发送一个消息<BR>
      * [功能详细描述]
      * @param what 发送message的what值
      */
     protected void AnimationUp(final int what)
     {
-        if (setAnimationId() != 0)
+        if (animationLayoutId() != 0)
         {
             Animation animation =
                 AnimationUtils.loadAnimation(mContext, R.anim.window_up);
@@ -134,11 +192,40 @@ public abstract class BaseWindow implements OnClickListener
     
     /**
      * [一句话功能简述]获取屏幕高宽<BR>
-     * [功能详细描述]用于处理横竖屏切换以及设置window位置
+     * [功能详细描述]
      */
     private void getScreenSize()
     {
         screenH = mManager.getDefaultDisplay().getHeight();
         screenW = mManager.getDefaultDisplay().getWidth();
+    }
+    
+    private void setParams(int type)
+    {
+        switch (type)
+        {
+            case WINDOW_MINI:
+                mParams.gravity = Gravity.LEFT | Gravity.TOP;
+                mParams.width = LayoutParams.WRAP_CONTENT;
+                mParams.height = LayoutParams.WRAP_CONTENT;
+                mParams.x = screenW;
+                mParams.y = screenH / 3;
+                break;
+            case WINDOW_SMALL:
+                mParams.gravity = Gravity.CENTER;
+                mParams.width = LayoutParams.WRAP_CONTENT;
+                mParams.height = LayoutParams.WRAP_CONTENT;
+                break;
+            
+            case WINDOW_FILL:
+                mParams.gravity = Gravity.TOP;
+                mParams.width = screenW;
+                mParams.height = screenH - 100;
+                mParams.y = 0;
+                break;
+            
+            default:
+                break;
+        }
     }
 }

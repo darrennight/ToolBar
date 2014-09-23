@@ -1,14 +1,13 @@
 package com.huawei.toolbar.ui.windows;
 
-import com.huawei.toolbar.R;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+
+import com.huawei.toolbar.R;
 
 public class RightWindow extends BaseWindow implements OnTouchListener
 {
@@ -17,7 +16,7 @@ public class RightWindow extends BaseWindow implements OnTouchListener
     private int moveX, moveY;
     
     private int mStartX, mStartY;
-
+    
     public RightWindow(Handler handler)
     {
         super(handler);
@@ -25,49 +24,37 @@ public class RightWindow extends BaseWindow implements OnTouchListener
         mRightBtn = (Button) mWindow.findViewById(R.id.right_btn);
         mRightBtn.setOnTouchListener(this);
     }
-
+    
     @Override
     public void onClick(View v)
     {
-        // TODO Auto-generated method stub
         
     }
-
+    
     @Override
-    protected int setWindow()
+    protected int windowLayout()
     {
-        // TODO Auto-generated method stub
         return R.layout.right_view;
     }
-
+    
     @Override
-    protected LayoutParams setParams()
+    protected int paramsType()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return WINDOW_FILL;
     }
-
+    
     @Override
-    protected int setAnimationId()
+    protected int animationLayoutId()
     {
-        // TODO Auto-generated method stub
         return 0;
     }
-
+    
     @Override
     public void create()
     {
-        // TODO Auto-generated method stub
-        
+        super.create();
     }
-
-    @Override
-    public void remove()
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
+    
     @Override
     public boolean onTouch(View v, MotionEvent event)
     {

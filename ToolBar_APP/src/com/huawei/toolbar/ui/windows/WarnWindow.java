@@ -2,18 +2,14 @@ package com.huawei.toolbar.ui.windows;
 
 import android.os.Handler;
 import android.view.View;
-import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
-import com.huawei.toolbar.ui.params.WindowParamsSmall;
 import com.huawei.toolbar.ui.view.WaterView;
 
 public class WarnWindow extends BaseWindow
 {
-    private static Boolean isWindowAdded = false;
-    
     private Button mCloseBtn;
     
     private Button mShopBtn;
@@ -69,7 +65,7 @@ public class WarnWindow extends BaseWindow
     }
     
     @Override
-    protected int setWindow()
+    protected int windowLayout()
     {
         return R.layout.warn_play_view;
     }
@@ -77,35 +73,18 @@ public class WarnWindow extends BaseWindow
     @Override
     public void create()
     {
-        if (!isWindowAdded)
-        {
-            mManager.addView(mWindow, mParams);
-            isWindowAdded = true;
-            
-            AnimationDown();
-        }
+        super.create();
+        AnimationDown();
     }
     
     @Override
-    public void remove()
+    protected int paramsType()
     {
-        if (isWindowAdded)
-        {
-            mManager.removeView(mWindow);
-            isWindowAdded = false;
-
-            AnimationDown();
-        }
-    }
-
-    @Override
-    protected LayoutParams setParams()
-    {
-        return new WindowParamsSmall();
+        return WINDOW_SMALL;
     }
     
     @Override
-    protected int setAnimationId()
+    protected int animationLayoutId()
     {
         return R.id.layout_back;
     }

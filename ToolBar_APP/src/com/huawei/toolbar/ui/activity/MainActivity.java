@@ -1,16 +1,22 @@
 package com.huawei.toolbar.ui.activity;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.MyWindowManager;
 import com.huawei.toolbar.R;
 import com.huawei.toolbar.ToolbarService;
-import com.huawei.toolbar.ViewManager;
 
 /**
  * 启动页面
@@ -29,7 +35,7 @@ public class MainActivity extends Activity implements OnClickListener
     
     private Button warnView;
     
-    private ViewManager viewManager;
+    private MyWindowManager viewManager;
     
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -47,7 +53,7 @@ public class MainActivity extends Activity implements OnClickListener
         warnView = (Button) findViewById(R.id.warn_btn);
         warnView.setOnClickListener(this);
         
-        viewManager = new ViewManager();
+        viewManager = MyWindowManager.getInstance();
     }
     
     @Override
@@ -56,9 +62,12 @@ public class MainActivity extends Activity implements OnClickListener
         switch (v.getId())
         {
             case R.id.start_service:
-                Intent startToolbarService =
-                    new Intent(this, ToolbarService.class);
-                startService(startToolbarService);
+                if (!isServiceRun())
+                {
+                    Intent startToolbarService =
+                        new Intent(this, ToolbarService.class);
+                    startService(startToolbarService);
+                }
                 
                 beforeView.setVisibility(View.VISIBLE);
                 afterView.setVisibility(View.VISIBLE);
@@ -66,9 +75,12 @@ public class MainActivity extends Activity implements OnClickListener
                 break;
             
             case R.id.stop_service:
-                Intent stopToolbarService =
-                    new Intent(this, ToolbarService.class);
-                stopService(stopToolbarService);
+                if (isServiceRun())
+                {
+                    Intent stopToolbarService =
+                        new Intent(this, ToolbarService.class);
+                    stopService(stopToolbarService);
+                }
                 
                 beforeView.setVisibility(View.GONE);
                 afterView.setVisibility(View.GONE);
@@ -90,5 +102,23 @@ public class MainActivity extends Activity implements OnClickListener
             default:
                 break;
         }
+    }
+    
+    public boolean isServiceRun()
+    {
+        ActivityManager myManager =
+            (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<RunningServiceInfo> runningService =
+            (ArrayList<RunningServiceInfo>) myManager.getRunningServices(1000);
+        for (int i = 0; i < runningService.size(); i++)
+        {
+            if (runningService.get(i).service.getClassName()
+                .toString()
+                .equals("com.huawei.toolbar.ToolbarService"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

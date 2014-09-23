@@ -27,9 +27,9 @@ import com.huawei.toolbar.ui.windows.WarnWindow;
  * 管理window展示
  * @author wWX191016
  */
-public class ViewManager extends Handler
+public class MyWindowManager extends Handler
 {
-    private static ViewManager instance;
+    private static MyWindowManager instance;
     
     /**
      * 消息传入前的 Window
@@ -71,7 +71,7 @@ public class ViewManager extends Handler
     
     private UnluckyWindow mUnluckyWindow;
     
-    public ViewManager()
+    public MyWindowManager()
     {
         instance = this;
         
@@ -210,8 +210,21 @@ public class ViewManager extends Handler
         }
     }
     
-    public static ViewManager getInstance()
+    public static MyWindowManager getInstance()
     {
+        if (instance == null)
+        {
+            instance = new MyWindowManager();
+        }
         return instance;
+    }
+    
+    public void updateView()
+    {
+        if (currentWindow != null)
+        {
+            Log.i("MyWindowManager", "updateView");
+            currentWindow.update();
+        }
     }
 }
