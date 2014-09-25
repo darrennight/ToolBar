@@ -2,63 +2,65 @@ package com.huawei.toolbar;
 
 public class MyData
 {
-    private static MyData instance;
+    int total;
     
-    public MyData()
+    int gprsTotal;
+    
+    int gprsUsed;
+    
+    int packageTotal;
+    
+    int packageUsed;
+
+    public int getTotal()
     {
-        instance = this;
+        return total;
     }
-    
-    public static MyData getInstance()
+
+    public void setTotal(int total)
     {
-        return instance;
+        this.total = total;
     }
-    
-    private int GPRSTotal;
-    
-    public int getGPRSTotal()
+
+    public int getGprsTotal()
     {
-        return GPRSTotal;
+        return gprsTotal;
     }
-    
-    public void setGPRSTotal(int gPRSTotal)
+
+    public void setGprsTotal(int gprsTotal)
     {
-        GPRSTotal = gPRSTotal;
+        this.gprsTotal = gprsTotal;
     }
-    
-    public int getGPTSUsed()
+
+    public int getGprsUsed()
     {
-        return GPTSUsed;
+        return gprsUsed;
     }
-    
-    public void setGPTSUsed(int gPTSUsed)
+
+    public void setGprsUsed(int gprsUsed)
     {
-        GPTSUsed = gPTSUsed;
+        this.gprsUsed = gprsUsed;
     }
-    
+
     public int getPackageTotal()
     {
         return packageTotal;
     }
-    
+
     public void setPackageTotal(int packageTotal)
     {
         this.packageTotal = packageTotal;
     }
-    
+
     public int getPackageUsed()
     {
         return packageUsed;
     }
-    
+
     public void setPackageUsed(int packageUsed)
     {
         this.packageUsed = packageUsed;
     }
     
-    private int GPTSUsed;
     
-    private int packageTotal;
-    
-    private int packageUsed;
 }

@@ -1,6 +1,5 @@
 package com.huawei.toolbar;
 
-
 /**
  * 全局常量
  * @author wWX191016
@@ -135,20 +134,17 @@ public class GlobleConstants
         int REFRESH = BASIC + 4;
     }
     
-    public interface Action
+    /**
+     * [一句话功能简述]网络请求常量<BR>
+     * [功能详细描述]
+     * @author wWX191016
+     * @version [RCS Client V100R001C03, 2014-9-25] 
+     */
+    public interface Http
     {
-        String BASIC = "com.huawei.toolbar.action.";
-        
         /**
-         * 横竖屏切换刷新
+         * 网络请求超时时间
          */
-        String CONFIG_CHANGE = BASIC + "broadcast.configchange";
-    }
-    
-    public interface ExtraName
-    {
-        String BASIC = "com.huawei.toolbar.extraname.";
-        
-        String SCREEN_ORIENTATION = "screen.orientation";
+        int TIMEOUT = 10000;
     }
 }

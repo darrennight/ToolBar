@@ -73,7 +73,6 @@ public class RightWindow extends BaseWindow implements OnTouchListener
                 if (Math.abs(moveX) > 10)
                 {
                     isMoved = true;
-                    Log.i("right", "moved");
                 }
                 moveX = 0;
                 

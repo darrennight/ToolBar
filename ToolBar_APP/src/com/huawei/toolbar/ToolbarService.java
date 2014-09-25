@@ -99,7 +99,6 @@ public class ToolbarService extends Service
             mTimer = new Timer();
             mTimer.scheduleAtFixedRate(mTask, 0, 500);
         }
-        Log.i("ToobarService", "onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
     

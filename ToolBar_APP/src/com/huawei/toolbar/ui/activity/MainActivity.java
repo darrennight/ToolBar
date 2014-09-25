@@ -1,6 +1,12 @@
 package com.huawei.toolbar.ui.activity;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import org.apache.http.Header;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -8,15 +14,20 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Xml;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.MyData;
 import com.huawei.toolbar.MyWindowManager;
 import com.huawei.toolbar.R;
 import com.huawei.toolbar.ToolbarService;
+import com.huawei.toolbar.util.LogUtil;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 /**
  * 启动页面
@@ -25,35 +36,45 @@ import com.huawei.toolbar.ToolbarService;
  */
 public class MainActivity extends Activity implements OnClickListener
 {
-    private Button startService;
+    private Button mStartService;
     
-    private Button stopService;
+    private Button mStopService;
     
-    private Button beforeView;
+    private Button mBeforeView;
     
-    private Button afterView;
+    private Button mAfterView;
     
-    private Button warnView;
+    private Button mWarnView;
     
-    private MyWindowManager viewManager;
+    private Button mHttpBtn;
+    
+    private LinearLayout mWindowControlLayout;
+    
+    private MyWindowManager mViewManager;
     
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        startService = (Button) findViewById(R.id.start_service);
-        startService.setOnClickListener(this);
-        stopService = (Button) findViewById(R.id.stop_service);
-        stopService.setOnClickListener(this);
-        beforeView = (Button) findViewById(R.id.before_btn);
-        beforeView.setOnClickListener(this);
-        afterView = (Button) findViewById(R.id.after_btn);
-        afterView.setOnClickListener(this);
-        warnView = (Button) findViewById(R.id.warn_btn);
-        warnView.setOnClickListener(this);
         
-        viewManager = MyWindowManager.getInstance();
+        setContentView(R.layout.main);
+        
+        mStartService = (Button) findViewById(R.id.start_service);
+        mStartService.setOnClickListener(this);
+        mStopService = (Button) findViewById(R.id.stop_service);
+        mStopService.setOnClickListener(this);
+        mBeforeView = (Button) findViewById(R.id.before_btn);
+        mBeforeView.setOnClickListener(this);
+        mAfterView = (Button) findViewById(R.id.after_btn);
+        mAfterView.setOnClickListener(this);
+        mWarnView = (Button) findViewById(R.id.warn_btn);
+        mWarnView.setOnClickListener(this);
+        mWindowControlLayout = (LinearLayout) findViewById(R.id.window_layout);
+        
+        mHttpBtn = (Button) findViewById(R.id.send_http_request);
+        mHttpBtn.setOnClickListener(this);
+        
+        mViewManager = MyWindowManager.getInstance();
     }
     
     @Override
@@ -69,9 +90,7 @@ public class MainActivity extends Activity implements OnClickListener
                     startService(startToolbarService);
                 }
                 
-                beforeView.setVisibility(View.VISIBLE);
-                afterView.setVisibility(View.VISIBLE);
-                warnView.setVisibility(View.VISIBLE);
+                mWindowControlLayout.setVisibility(View.VISIBLE);
                 break;
             
             case R.id.stop_service:
@@ -82,23 +101,113 @@ public class MainActivity extends Activity implements OnClickListener
                     stopService(stopToolbarService);
                 }
                 
-                beforeView.setVisibility(View.GONE);
-                afterView.setVisibility(View.GONE);
-                warnView.setVisibility(View.GONE);
+                mWindowControlLayout.setVisibility(View.GONE);
                 break;
             
             case R.id.before_btn:
-                viewManager.sendEmptyMessage(GlobleConstants.WindowType.BEFORE_PLAY);
+                mViewManager.sendEmptyMessage(GlobleConstants.WindowType.BEFORE_PLAY);
                 break;
             
             case R.id.after_btn:
-                viewManager.sendEmptyMessage(GlobleConstants.WindowType.AFTER_PLAY);
+                mViewManager.sendEmptyMessage(GlobleConstants.WindowType.AFTER_PLAY);
                 break;
             
             case R.id.warn_btn:
-                viewManager.sendEmptyMessage(GlobleConstants.WindowType.WARN);
+                mViewManager.sendEmptyMessage(GlobleConstants.WindowType.WARN);
                 break;
             
+            case R.id.send_http_request:
+                AsyncHttpClient client = new AsyncHttpClient();
+                client.get("http://172.17.182.49:9001/myservice/getdata.do?id=10000",
+                    new AsyncHttpResponseHandler()
+                    {
+                        
+                        @Override
+                        public void onStart()
+                        {
+                            super.onStart();
+                            LogUtil.i("onStart()", "start");
+                        }
+                        
+                        @Override
+                        public void onSuccess(int arg0, Header[] arg1,
+                            byte[] arg2)
+                        {
+                            LogUtil.i("onSuccess", arg0 + "");
+                            if (arg1 != null)
+                            {
+                                for (int i = 0; i < arg1.length; i++)
+                                {
+                                    LogUtil.i("onSuccess", arg1[i].toString());
+                                }
+                            }
+                            if (arg2 != null)
+                            {
+                                String string = new String(arg2);
+                                LogUtil.i("onSuccess", string);
+                                
+                                InputStream stream =
+                                    new ByteArrayInputStream(arg2);
+                                XmlPullParser parser = Xml.newPullParser();
+                                try
+                                {
+                                    MyData data = null;
+                                    
+                                    parser.setInput(stream, "UTF-8");
+                                    int event = parser.getEventType();
+                                    
+                                    while (event != XmlPullParser.END_DOCUMENT)
+                                    {
+                                        switch (event)
+                                        {
+                                            case XmlPullParser.START_TAG:
+                                                if ("total".equals(parser.getName()))
+                                                {
+                                                    data = new MyData();
+                                                    data.setTotal(Integer.parseInt(parser.getAttributeValue(0)));
+                                                }
+                                                
+                                                
+                                                break;
+                                            
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                }
+                                catch (XmlPullParserException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                            
+                        }
+                        
+                        @Override
+                        public void onFailure(int arg0, Header[] arg1,
+                            byte[] arg2, Throwable arg3)
+                        {
+                            LogUtil.i("onFailure", arg0 + "");
+                            if (arg1 != null)
+                            {
+                                for (int i = 0; i < arg1.length; i++)
+                                {
+                                    LogUtil.i("onFailure", arg1[i].toString());
+                                }
+                            }
+                            if (arg2 != null)
+                            {
+                                String string = new String(arg2);
+                                LogUtil.i("onFailure", string);
+                            }
+                            
+                            if (arg3 != null)
+                            {
+                                LogUtil.i("onFailure", arg3.toString());
+                            }
+                        }
+                    });
+                
             default:
                 break;
         }

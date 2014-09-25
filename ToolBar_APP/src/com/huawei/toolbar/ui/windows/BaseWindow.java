@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import com.huawei.toolbar.R;
 import com.huawei.toolbar.ToolbarApplication;
 import com.huawei.toolbar.ui.params.ToolbarParams;
+import com.huawei.toolbar.util.LogUtil;
 
 public abstract class BaseWindow implements OnClickListener
 {
@@ -133,7 +134,7 @@ public abstract class BaseWindow implements OnClickListener
         getScreenSize();
         setParams(paramsType());
         mManager.updateViewLayout(mWindow, mParams);
-        Log.i("Window", "screenH=" + screenH + ",screenW=" + screenW);
+        LogUtil.i("Window", "screenH=" + screenH + ",screenW=" + screenW);
     }
     
     /**
@@ -220,7 +221,7 @@ public abstract class BaseWindow implements OnClickListener
             case WINDOW_FILL:
                 mParams.gravity = Gravity.TOP;
                 mParams.width = screenW;
-                mParams.height = screenH - 100;
+                mParams.height = screenH * 11 / 12;
                 mParams.y = 0;
                 break;
             

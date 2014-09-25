@@ -223,7 +223,6 @@ public class MyWindowManager extends Handler
     {
         if (currentWindow != null)
         {
-            Log.i("MyWindowManager", "updateView");
             currentWindow.update();
         }
     }
