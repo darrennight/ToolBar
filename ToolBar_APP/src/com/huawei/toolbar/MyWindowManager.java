@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.huawei.toolbar.ui.windows.AboutWindow;
 import com.huawei.toolbar.ui.windows.AfterPlayWindow;
@@ -198,6 +197,17 @@ public class MyWindowManager extends Handler
         
         if (currentWindow != lastWindow)
         {
+            if (lastWindow != null && currentWindow != null)
+            {
+                if ((currentWindow.equals(mMainWindow)
+                    || currentWindow.equals(mBeforePlayWindow)
+                    || currentWindow.equals(mAfterPlayWindow) || currentWindow.equals(mWarnWindow))
+                    && (lastWindow.equals(mMiniWindow)))
+                {
+                    currentWindow.setIsAnimationFromMini(true);
+                }
+            }
+            
             if (lastWindow != null)
             {
                 lastWindow.remove();

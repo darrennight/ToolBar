@@ -66,6 +66,7 @@ public class MainWindow extends BaseWindow
     {
         super.create();
         btn_clickNum = 0;
+        mFlowLayout.setVisibility(View.INVISIBLE);
         AnimationDown();
     }
     
@@ -74,10 +75,11 @@ public class MainWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE, true);
         }
         if (mShowBtn == v)
         {
+            mFlowLayout.setVisibility(View.VISIBLE);
             btn_clickNum++;
             if (btn_clickNum % 2 == 1)
             {
@@ -109,15 +111,15 @@ public class MainWindow extends BaseWindow
         }
         if (mShopBtn == v)
         {
-            AnimationUp(GlobleConstants.WindowType.SHOP);
+            AnimationUp(GlobleConstants.WindowType.SHOP, false);
         }
         if (mMessageBtn == v)
         {
-            AnimationUp(GlobleConstants.WindowType.MESSAGE);
+            AnimationUp(GlobleConstants.WindowType.MESSAGE, false);
         }
         if (mAboutBtn == v)
         {
-            AnimationUp(GlobleConstants.WindowType.ABOUT);
+            AnimationUp(GlobleConstants.WindowType.ABOUT, false);
         }
         if (mWaterBtn == v)
         {
@@ -140,6 +142,6 @@ public class MainWindow extends BaseWindow
     @Override
     protected int animationLayoutId()
     {
-        return R.id.layout_back;
+        return R.id.layout_body;
     }
 }

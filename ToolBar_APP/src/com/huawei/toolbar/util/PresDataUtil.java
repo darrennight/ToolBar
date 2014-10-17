@@ -1,10 +1,9 @@
 package com.huawei.toolbar.util;
 
-import com.huawei.toolbar.ToolbarApplication;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.huawei.toolbar.ToolbarApplication;
 
 /**
  * SharedPreferences管理器
@@ -30,11 +29,19 @@ public class PresDataUtil
                 Activity.MODE_PRIVATE);
     }
     
-    public static void save(String string, int i)
+    public static void save(String key, int value)
     {
         init();
         mEditor = mPreferences.edit();
-        mEditor.putInt(string, i);
+        mEditor.putInt(key, value);
+        mEditor.commit();
+    }
+    
+    public static void save(String key, String value)
+    {
+        init();
+        mEditor = mPreferences.edit();
+        mEditor.putString(key, value);
         mEditor.commit();
     }
     

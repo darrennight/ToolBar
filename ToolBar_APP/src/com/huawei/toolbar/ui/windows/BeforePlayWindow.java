@@ -36,11 +36,11 @@ public class BeforePlayWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE, true);
         }
         if (mShopBtn == v)
         {
-            AnimationUp(GlobleConstants.WindowType.SHOP);
+            AnimationUp(GlobleConstants.WindowType.SHOP, false);
         }
         if (mWaterBtn == v)
         {
@@ -70,6 +70,6 @@ public class BeforePlayWindow extends BaseWindow
     @Override
     protected int animationLayoutId()
     {
-        return R.id.layout_back;
+        return R.id.layout_body;
     }
 }

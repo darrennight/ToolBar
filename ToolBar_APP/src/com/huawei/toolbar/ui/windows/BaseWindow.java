@@ -2,21 +2,24 @@ package com.huawei.toolbar.ui.windows;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager.LayoutParams;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 
+import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
 import com.huawei.toolbar.ToolbarApplication;
 import com.huawei.toolbar.ui.params.ToolbarParams;
 import com.huawei.toolbar.util.LogUtil;
+import com.huawei.toolbar.util.PresDataUtil;
 
 public abstract class BaseWindow implements OnClickListener
 {
@@ -36,7 +39,14 @@ public abstract class BaseWindow implements OnClickListener
     
     private View mAnimationLayout;
     
-    private static Boolean isMiniWindowAdded = false;
+    private Boolean isWindowAdded = false;
+    
+    private Boolean isAnimationFromMini = false;
+    
+    public void setIsAnimationFromMini(Boolean isAnimationFromMini)
+    {
+        this.isAnimationFromMini = isAnimationFromMini;
+    }
     
     /**
      * 可拖动的mini悬浮窗属性
@@ -85,7 +95,7 @@ public abstract class BaseWindow implements OnClickListener
     protected abstract int paramsType();
     
     /**
-     * [一句话功能简述]需要加载动画的布局<BR>
+     * [一句话功能简述]需要加载动画的布局,返回0时无动画<BR>
      * [功能详细描述]
      * @return 动画资源id
      */
@@ -97,14 +107,14 @@ public abstract class BaseWindow implements OnClickListener
      */
     public void create()
     {
-        if (isMiniWindowAdded)
+        if (isWindowAdded)
         {
             return;
         }
         getScreenSize();
         setParams(paramsType());
         mManager.addView(mWindow, mParams);
-        isMiniWindowAdded = true;
+        isWindowAdded = true;
     }
     
     /**
@@ -113,12 +123,12 @@ public abstract class BaseWindow implements OnClickListener
      */
     public void remove()
     {
-        if (!isMiniWindowAdded)
+        if (!isWindowAdded)
         {
             return;
         }
         mManager.removeView(mWindow);
-        isMiniWindowAdded = false;
+        isWindowAdded = false;
     }
     
     /**
@@ -127,7 +137,7 @@ public abstract class BaseWindow implements OnClickListener
      */
     public void update()
     {
-        if (!isMiniWindowAdded)
+        if (!isWindowAdded)
         {
             return;
         }
@@ -145,8 +155,24 @@ public abstract class BaseWindow implements OnClickListener
     {
         if (animationLayoutId() != 0)
         {
-            Animation animation =
-                AnimationUtils.loadAnimation(mContext, R.anim.window_down);
+            Animation animation;
+            
+            if (isAnimationFromMini)
+            {
+                animation =
+                    new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+                        Animation.ABSOLUTE, getAnimationX(),
+                        Animation.ABSOLUTE, getAnimationY());
+                animation.setDuration(500);
+                
+                isAnimationFromMini = false;
+            }
+            else
+            {
+                animation =
+                    AnimationUtils.loadAnimation(mContext, R.anim.window_down);
+            }
+            
             animation.setFillAfter(true);
             mAnimationLayout.clearAnimation();
             mAnimationLayout.startAnimation(animation);
@@ -158,12 +184,27 @@ public abstract class BaseWindow implements OnClickListener
      * [功能详细描述]
      * @param what 发送message的what值
      */
-    protected void AnimationUp(final int what)
+    protected void AnimationUp(final int what, Boolean fromLevel1)
     {
         if (animationLayoutId() != 0)
         {
-            Animation animation =
-                AnimationUtils.loadAnimation(mContext, R.anim.window_up);
+            Animation animation;
+            
+            if (fromLevel1)
+            {
+                animation =
+                    new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f,
+                        Animation.ABSOLUTE, getAnimationX(),
+                        Animation.ABSOLUTE, getAnimationY());
+                animation.setDuration(500);
+                
+            }
+            else
+            {
+                animation =
+                    AnimationUtils.loadAnimation(mContext, R.anim.window_up);
+            }
+            
             animation.setFillAfter(true);
             animation.setAnimationListener(new AnimationListener()
             {
@@ -186,6 +227,7 @@ public abstract class BaseWindow implements OnClickListener
                     mHandler.sendEmptyMessage(what);
                 }
             });
+            
             mAnimationLayout.clearAnimation();
             mAnimationLayout.startAnimation(animation);
         }
@@ -209,13 +251,25 @@ public abstract class BaseWindow implements OnClickListener
                 mParams.gravity = Gravity.LEFT | Gravity.TOP;
                 mParams.width = LayoutParams.WRAP_CONTENT;
                 mParams.height = LayoutParams.WRAP_CONTENT;
-                mParams.x = screenW;
-                mParams.y = screenH / 3;
+                if (mParams.y > screenH)
+                {
+                    mParams.y = screenH / 3;
+                }
+                
+                if (mParams.x > 0)
+                {
+                    mParams.x = screenW;
+                }
+                else
+                {
+                    mParams.x = 0;
+                }
+                
                 break;
             case WINDOW_SMALL:
                 mParams.gravity = Gravity.CENTER;
-                mParams.width = LayoutParams.WRAP_CONTENT;
-                mParams.height = LayoutParams.WRAP_CONTENT;
+                mParams.width = screenW;
+                mParams.height = screenH;
                 break;
             
             case WINDOW_FILL:
@@ -228,5 +282,57 @@ public abstract class BaseWindow implements OnClickListener
             default:
                 break;
         }
+    }
+    
+    /**
+     * [一句话功能简述]获取屏幕像素密度<BR>
+     * [功能详细描述]
+     * @return
+     */
+    private float getDensity()
+    {
+        DisplayMetrics dm = new DisplayMetrics();
+        dm = mContext.getResources().getDisplayMetrics();
+        return dm.density;
+    }
+    
+    /**
+     * [一句话功能简述]获取从mini窗口展开的动画起始x轴位置<BR>
+     * [功能详细描述]
+     * @return
+     */
+    private float getAnimationX()
+    {
+        int i =
+            PresDataUtil.getInt(GlobleConstants.SharedPreferencesString.MINI_X);
+        
+        // 小窗口宽度dip值
+        int smallWindowDipX = 300;
+        
+        // mini窗口寬度dip值
+        int miniWindowDipX = 40;
+        
+        return (i - (screenW - smallWindowDipX * getDensity() - miniWindowDipX
+            * getDensity()) / 2);
+    }
+    
+    /**
+     * [一句话功能简述]获取从mini窗口展开的动画起始y轴位置<BR>
+     * [功能详细描述]
+     * @return
+     */
+    private float getAnimationY()
+    {
+        int i =
+            PresDataUtil.getInt(GlobleConstants.SharedPreferencesString.MINI_Y);
+        
+        // 小窗口高度dip值
+        int smallWindowDipX = 200;
+        
+        // mini窗口高度dip值
+        int miniWindowDipX = 40;
+        
+        return (i - (screenH - smallWindowDipX * getDensity() - miniWindowDipX
+            * getDensity()) / 2);
     }
 }

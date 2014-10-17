@@ -36,19 +36,19 @@ public class AboutWindow extends BaseWindow
     {
         if (mBackBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.BACK);
+            AnimationUp(GlobleConstants.OprationType.BACK, false);
         }
         if (mCloseBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE, false);
         }
         if (mFeedbackBtn == v)
         {
-            AnimationUp(GlobleConstants.WindowType.FEEDBACK);
+            AnimationUp(GlobleConstants.WindowType.FEEDBACK, false);
         }
         if (mPullUpBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.BACK);
+            AnimationUp(GlobleConstants.OprationType.BACK, false);
         }
     }
     

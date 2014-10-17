@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
+import com.huawei.toolbar.util.PresDataUtil;
 
 public class MiniWindow extends BaseWindow implements OnTouchListener
 {
@@ -28,6 +29,13 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
         mMiniBtn = (Button) mWindow.findViewById(R.id.mini_btn);
         mMiniBtn.setOnTouchListener(this);
         mMiniBtn.setOnClickListener(this);
+        
+        mParams.x = screenW;
+        mParams.y = screenH / 3;
+        PresDataUtil.save(GlobleConstants.SharedPreferencesString.MINI_X,
+            mParams.x);
+        PresDataUtil.save(GlobleConstants.SharedPreferencesString.MINI_Y,
+            mParams.y);
     }
     
     @Override
@@ -51,7 +59,10 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
         switch (event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
+                // 动画过程中点击时，取消动画
                 mMiniBtn.clearAnimation();
+                // 点击悬浮窗时使之恢复至动画前状态
+                mMiniBtn.invalidate();
                 mMiniBtn.bringToFront();
                 mStartX = (int) event.getRawX();
                 mStartY = (int) event.getRawY();
@@ -86,6 +97,10 @@ public class MiniWindow extends BaseWindow implements OnTouchListener
                 }
                 moveX = 0;
                 moveY = 0;
+                PresDataUtil.save(GlobleConstants.SharedPreferencesString.MINI_X,
+                    mParams.x);
+                PresDataUtil.save(GlobleConstants.SharedPreferencesString.MINI_Y,
+                    mParams.y);
                 break;
             
             default:

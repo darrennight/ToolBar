@@ -147,4 +147,11 @@ public class GlobleConstants
          */
         int TIMEOUT = 10000;
     }
+    
+    public interface SharedPreferencesString
+    {
+        String MINI_X = "mini_x";
+        
+        String MINI_Y = "mini_y";
+    }
 }

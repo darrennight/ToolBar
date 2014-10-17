@@ -24,7 +24,7 @@ public class LuckyWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE, true);
         }
     }
     
@@ -50,6 +50,6 @@ public class LuckyWindow extends BaseWindow
     @Override
     protected int animationLayoutId()
     {
-        return R.id.layout_back;
+        return R.id.layout_body;
     }
 }

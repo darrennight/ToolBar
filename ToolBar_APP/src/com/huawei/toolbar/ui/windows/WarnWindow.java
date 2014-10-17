@@ -40,22 +40,22 @@ public class WarnWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE, true);
         }
         if (mShopBtn == v)
         {
-            AnimationUp(GlobleConstants.WindowType.SHOP);
+            AnimationUp(GlobleConstants.WindowType.SHOP, false);
         }
         if (mDraw == v)
         {
             int i = (int) (Math.random() * 2);
             if (i == 0)
             {
-                AnimationUp(GlobleConstants.WindowType.LUCKY);
+                AnimationUp(GlobleConstants.WindowType.LUCKY, false);
             }
             else
             {
-                AnimationUp(GlobleConstants.WindowType.UNLUCKY);
+                AnimationUp(GlobleConstants.WindowType.UNLUCKY, false);
             }
         }
         if (mWaterBtn == v)
@@ -86,6 +86,6 @@ public class WarnWindow extends BaseWindow
     @Override
     protected int animationLayoutId()
     {
-        return R.id.layout_back;
+        return R.id.layout_body;
     }
 }

@@ -3,6 +3,7 @@ package com.huawei.toolbar.ui.windows;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
@@ -16,6 +17,10 @@ public class ShopWindow extends BaseWindow
     private Button mBuyBtn1, mBuyBtn2, mBuyBtn3;
     
     private Button mPullUpBtn;
+    
+    private Button mTabBtn1, mTabBtn2, mTabBtn3;
+    
+    private RelativeLayout mTabLayout1, mTabLayout2, mTabLayout3;
     
     public ShopWindow(Handler handler)
     {
@@ -33,6 +38,19 @@ public class ShopWindow extends BaseWindow
         mBuyBtn3.setOnClickListener(this);
         mPullUpBtn = (Button) mWindow.findViewById(R.id.pull_btn);
         mPullUpBtn.setOnClickListener(this);
+        mTabBtn1 = (Button) mWindow.findViewById(R.id.btn_tab1);
+        mTabBtn1.setOnClickListener(this);
+        mTabBtn2 = (Button) mWindow.findViewById(R.id.btn_tab2);
+        mTabBtn2.setOnClickListener(this);
+        mTabBtn3 = (Button) mWindow.findViewById(R.id.btn_tab3);
+        mTabBtn3.setOnClickListener(this);
+        mTabLayout1 = (RelativeLayout) mWindow.findViewById(R.id.tab_1);
+        mTabLayout2 = (RelativeLayout) mWindow.findViewById(R.id.tab_2);
+        mTabLayout3 = (RelativeLayout) mWindow.findViewById(R.id.tab_3);
+        
+        mTabBtn1.setSelected(true);
+        mTabBtn2.setSelected(false);
+        mTabBtn3.setSelected(false);
     }
     
     @Override
@@ -40,27 +58,54 @@ public class ShopWindow extends BaseWindow
     {
         if (mBackBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.BACK);
+            AnimationUp(GlobleConstants.OprationType.BACK, false);
         }
         if (mCloseBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE, false);
         }
         if (mBuyBtn1 == v)
         {
-            AnimationUp(GlobleConstants.WindowType.BUY);
+            AnimationUp(GlobleConstants.WindowType.BUY, false);
         }
         if (mBuyBtn2 == v)
         {
-            AnimationUp(GlobleConstants.WindowType.BUY);
+            AnimationUp(GlobleConstants.WindowType.BUY, false);
         }
         if (mBuyBtn3 == v)
         {
-            AnimationUp(GlobleConstants.WindowType.BUY);
+            AnimationUp(GlobleConstants.WindowType.BUY, false);
         }
         if (mPullUpBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.BACK);
+            AnimationUp(GlobleConstants.OprationType.BACK, false);
+        }
+        if (mTabBtn1 == v)
+        {
+            mTabBtn1.setSelected(true);
+            mTabBtn2.setSelected(false);
+            mTabBtn3.setSelected(false);
+            mTabLayout1.setVisibility(View.VISIBLE);
+            mTabLayout2.setVisibility(View.INVISIBLE);
+            mTabLayout3.setVisibility(View.INVISIBLE);
+        }
+        if (mTabBtn2 == v)
+        {
+            mTabBtn2.setSelected(true);
+            mTabBtn1.setSelected(false);
+            mTabBtn3.setSelected(false);
+            mTabLayout2.setVisibility(View.VISIBLE);
+            mTabLayout1.setVisibility(View.INVISIBLE);
+            mTabLayout3.setVisibility(View.INVISIBLE);
+        }
+        if (mTabBtn3 == v)
+        {
+            mTabBtn3.setSelected(true);
+            mTabBtn1.setSelected(false);
+            mTabBtn2.setSelected(false);
+            mTabLayout3.setVisibility(View.VISIBLE);
+            mTabLayout1.setVisibility(View.INVISIBLE);
+            mTabLayout2.setVisibility(View.INVISIBLE);
         }
     }
     

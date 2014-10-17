@@ -24,7 +24,7 @@ public class BuySuccessWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE, false);
         }
     }
     

@@ -1,13 +1,11 @@
 package com.huawei.toolbar.ui.windows;
 
-import com.huawei.toolbar.GlobleConstants;
-import com.huawei.toolbar.R;
-import com.huawei.toolbar.ui.params.WindowParamsFill;
-
 import android.os.Handler;
 import android.view.View;
-import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+
+import com.huawei.toolbar.GlobleConstants;
+import com.huawei.toolbar.R;
 
 public class BuyWindow extends BaseWindow
 {
@@ -38,19 +36,19 @@ public class BuyWindow extends BaseWindow
     {
         if (mBackBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.BACK);
+            AnimationUp(GlobleConstants.OprationType.BACK, false);
         }
         if (mCloseBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE, false);
         }
         if (mBuyBtn == v)
         {
-            AnimationUp(GlobleConstants.WindowType.BUY_SUCCESS);
+            AnimationUp(GlobleConstants.WindowType.BUY_SUCCESS, false);
         }
         if (mPullUpBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.BACK);
+            AnimationUp(GlobleConstants.OprationType.BACK, false);
         }
     }
     

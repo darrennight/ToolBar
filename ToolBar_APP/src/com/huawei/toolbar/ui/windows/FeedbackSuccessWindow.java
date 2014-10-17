@@ -7,6 +7,12 @@ import android.widget.Button;
 import com.huawei.toolbar.GlobleConstants;
 import com.huawei.toolbar.R;
 
+/**
+ * [一句话功能简述]<BR>
+ * [功能详细描述]
+ * @author wWX191016
+ * @version [RCS Client V100R001C03, 2014-10-16] 
+ */
 public class FeedbackSuccessWindow extends BaseWindow
 {
     private Button mCloseBtn;
@@ -24,7 +30,7 @@ public class FeedbackSuccessWindow extends BaseWindow
     {
         if (mCloseBtn == v)
         {
-            AnimationUp(GlobleConstants.OprationType.CLOSE);
+            AnimationUp(GlobleConstants.OprationType.CLOSE, false);
         }
     }
     
