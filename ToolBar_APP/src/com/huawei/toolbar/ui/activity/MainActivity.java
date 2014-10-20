@@ -58,9 +58,6 @@ public class MainActivity extends Activity implements OnClickListener
         mWarnView.setOnClickListener(this);
         mWindowControlLayout = (LinearLayout) findViewById(R.id.window_layout);
         
-        //        mHttpBtn = (Button) findViewById(R.id.send_http_request);
-        //        mHttpBtn.setOnClickListener(this);
-        
         mViewManager = MyWindowManager.getInstance();
     }
     
@@ -103,14 +100,16 @@ public class MainActivity extends Activity implements OnClickListener
                 mViewManager.sendEmptyMessage(GlobleConstants.WindowType.WARN);
                 break;
             
-            //            case R.id.send_http_request:
-            //                break;
-            
             default:
                 break;
         }
     }
     
+    /**
+     * [一句话功能简述]<BR>
+     * [功能详细描述]
+     * @return
+     */
     public boolean isServiceRun()
     {
         ActivityManager myManager =
